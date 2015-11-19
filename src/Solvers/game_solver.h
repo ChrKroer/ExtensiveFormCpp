@@ -6,6 +6,8 @@
 #define EFG_SOLVERS_GAMESOLVER_H
 
 
+#include "game.h"
+
 class GameSolver {
 public:
   GameSolver(Game game);

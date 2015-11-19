@@ -6,15 +6,15 @@
 #define EFG_SOLVERS_COIN_H
 
 
-#include "Game.h"
+#include "game.h"
 
-class Coin : public Game {
+class Coin : public game {
 public:
-    int nActions(int player) {
-        if (player == 1) return 11;
-        else if (player == 2) return 12;
-        else return 0;
-    }
+  int nActions(int player) {
+    if (player == 1) return 11;
+    else if (player == 2) return 12;
+    else return 0;
+  }
 };
 
 

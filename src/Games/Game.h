@@ -8,13 +8,13 @@
 
 class Game {
 public:
-    virtual int nActions(int player) = 0;
+  virtual int num_actions(int player) = 0;
 
-    virtual int nInfoSets(int player) = 0;
+  virtual int num_infoSets(int player) = 0;
 
-    virtual int nActions(int player, int infoSet) = 0;
+  virtual int num_actions(int player, int infoSet) = 0;
 
-    virtual bool isLeaf(int history[]) = 0;
+  virtual bool is_leaf(int history[]) = 0;
 };
 
 

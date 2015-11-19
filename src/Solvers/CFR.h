@@ -6,13 +6,12 @@
 #define EFG_SOLVERS_COUNTERFACTUALREGRETMINIMIZATION_H
 
 
-#include "GameSolver.h"
+#include "game_solver.h"
+#include "../Games/game.h"
 
-class CounterfactualRegretMinimization : public GameSolver {
+class CFR : public GameSolver {
 public:
-    CounterfactualRegretMinimization(Game game);
-private:
-
+  CFR(const Game &game);
 };
 
 

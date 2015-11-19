@@ -2,4 +2,4 @@
 // Created by Christian Kroer on 9/1/15.
 //
 
-#include "GameSolver.h"
+#include "game_solver.h"
