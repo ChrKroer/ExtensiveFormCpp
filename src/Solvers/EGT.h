@@ -6,14 +6,23 @@
 #define EFG_SOLVERS_EGT_H
 
 
-#include "game_solver.h"
 #include "../Games/game.h"
+#include "game_solver.h"
 
 class EGT : public GameSolver {
 
 public:
-  EGT(const Game &game);
+  enum Prox { kEntropy = 0, kEuclidean = 1 };
+
+  EGT(const Game &game, EGT::Prox prox);
   ~EGT();
+
+private:
+  void UpdateInfoSet(int infoset);
+
+
+
+  Prox prox;
 };
 
 

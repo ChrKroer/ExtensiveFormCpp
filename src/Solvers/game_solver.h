@@ -6,12 +6,14 @@
 #define EFG_SOLVERS_GAMESOLVER_H
 
 
-#include "game.h"
+#include "../Games/game.h"
 
 class GameSolver {
 public:
   GameSolver(Game game);
   ~GameSolver();
+
+  virtual void solve() = 0;
 
   const double* &getStrategyP1();
   const double* &getStrategyP2();

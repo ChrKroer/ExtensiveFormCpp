@@ -3,3 +3,11 @@
 //
 
 #include "game_solver.h"
+
+GameSolver::GameSolver(Game game) {
+
+}
+
+GameSolver::~GameSolver() {
+
+}
