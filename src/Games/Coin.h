@@ -6,15 +6,19 @@
 #define EFG_SOLVERS_COIN_H
 
 
+#include <vector>
+#include <string>
 #include "game.h"
 
-class Coin : public game {
+class Coin : public Game {
 public:
-  int nActions(int player) {
-    if (player == 1) return 11;
-    else if (player == 2) return 12;
-    else return 0;
-  }
+  int num_sequences(int player);
+  int num_infosets(int player);
+
+  void UtilityVector(double relization_plan[], double utility_vector[], int player);
+
+private:
+  std::string history;
 };
 
 

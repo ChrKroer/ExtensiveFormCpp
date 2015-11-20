@@ -6,15 +6,16 @@
 #define EFG_SOLVERS_GAME_H
 
 
+#include <vector>
+
 class Game {
 public:
-  virtual int num_actions(int player) = 0;
+  // return the total number of sequences available to the player.
+  virtual int num_sequences(int player) = 0;
 
   virtual int num_infoSets(int player) = 0;
 
-  virtual int num_actions(int player, int infoSet) = 0;
-
-  virtual bool is_leaf(int history[]) = 0;
+  virtual void UtilityVector(double realization_plan[], double utility[], int player) = 0;
 };
 
 
