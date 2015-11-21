@@ -13,14 +13,14 @@ set(SOURCE_FILES
         src/Games/coin.cpp src/Games/coin.h
         src/Solvers/egt.cpp src/Solvers/egt.h
         src/Solvers/cfr.cpp src/Solvers/cfr.h
-        test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h)
+        test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h src/Solvers/Prox.cpp src/Solvers/Prox.h)
 add_executable(efg_solve ${SOURCE_FILES} )
 
 
 set(GTEST /Users/ckroer/install/c++/googletest/googletest/)
 include_directories(${GTEST}/include ${GTEST})
 
-set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h)
+set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h src/Solvers/Prox.cpp src/Solvers/Prox.h)
 add_executable(gameTest ${TEST_FILES})
 
 target_link_libraries(gameTest gtest gtest_main)

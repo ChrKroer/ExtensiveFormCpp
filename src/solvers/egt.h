@@ -8,17 +8,17 @@
 
 #include "../Games/game.h"
 #include "game_solver.h"
+#include "Prox.h"
 
 class EGT : public GameSolver {
 
 public:
-  enum Prox { kEntropy = 0, kEuclidean = 1 };
 
   EGT(const Game &game, EGT::Prox prox);
   ~EGT();
 
 private:
-  void UpdateInfoSet(int infoset);
+  void Iterate(int num_iterations);
 
 
 

@@ -12,12 +12,3 @@ EGT::~EGT() {
 
 }
 
-void EGT::UpdateInfoSet(int infoset) {
-  if (prox == EGT::Prox::kEntropy) {
-
-  } else if (prox == EGT::Prox::kEuclidean) {
-
-  } else {
-
-  }
-}
