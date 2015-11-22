@@ -17,12 +17,12 @@ public:
 
   int infoset_first_action(int player, int infoset) const;
   int infoset_last_action(int player, int infoset) const;
+  int parent_sequence(int player, int infoset) const;
 
 
   void UtilityVector(double *relization_plan, double *utility_vector, int player) const;
 
-private:
-  std::string history;
+  double game_value() {return 0.375;} // hard-coded value of game for debugging ease
 };
 
 
