@@ -10,7 +10,7 @@ void efg_solve::DilatedEntropy::Step(const std::vector<double> &utility, double 
                                      std::vector<double> *strategy) const {
   Step(utility, step_size, player, NULL, strategy);
 }
-void efg_solve::DilatedEntropy::Step(const std::vector<double> &utility, double step_size, Player player, const std::vector<double> &previous,
+void efg_solve::DilatedEntropy::Step(const std::vector<double> &utility, double step_size, Player player, const std::vector<double> *previous,
                                      std::vector<double> *strategy) const {
   for (int infoset = game_->num_infoSets(player)-1; infoset >= 0; ++infoset) {
     int first = game_->infoset_first_sequence(player, infoset);
@@ -30,7 +30,7 @@ void efg_solve::DilatedEntropy::Step(const std::vector<double> &utility, double 
       if (previous == NULL) {
         unscaled = std::exp(utility[sequence] - offset);
       } else {
-        unscaled = previous[sequence] * std::exp(utility[sequence] - offset);
+        unscaled = (*previous)[sequence] * std::exp(utility[sequence] - offset);
       }
       ev += unscaled * utility[sequence];
       normalizer += unscaled;

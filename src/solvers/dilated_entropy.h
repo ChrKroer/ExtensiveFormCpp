@@ -13,7 +13,7 @@ namespace efg_solve {
 
   public:
     virtual void Step(const std::vector<double> &utility, double step_size, Player player, std::vector<double> *strategy) const;
-    virtual void Step(const std::vector<double> &utility, double step_size, Player player, const std::vector<double> &previous, std::vector<double> *strategy) const;
+    virtual void Step(const std::vector<double> &utility, double step_size, Player player, const std::vector<double> *previous, std::vector<double> *strategy) const;
   };
 
 }
