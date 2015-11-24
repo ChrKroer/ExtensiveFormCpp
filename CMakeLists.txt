@@ -7,20 +7,32 @@ project(efg_solve)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-        src/main.cpp
-        src/Solvers/game_solver.cpp src/Solvers/game_solver.h
-        src/Games/game.h
-        src/Games/coin.cpp src/Games/coin.h
-        src/Solvers/egt.cpp src/Solvers/egt.h
-        src/Solvers/cfr.cpp src/Solvers/cfr.h
-        test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h src/Solvers/Prox.cpp src/Solvers/Prox.h)
-add_executable(efg_solve ${SOURCE_FILES} )
+        src/solvers/game_solver.cpp src/solvers/game_solver.h
+        src/games/game.h
+        src/games/coin.cpp src/games/coin.h
+        src/solvers/egt.cpp src/solvers/egt.h
+        src/solvers/cfr.cpp src/solvers/cfr.h
+        src/games/full_game.cpp src/games/full_game.h
+        src/solvers/prox.h
+        src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h)
+add_executable(efg_solve ${SOURCE_FILES} src/main.cpp)
 
 
-set(GTEST /Users/ckroer/install/c++/googletest/googletest/)
-include_directories(${GTEST}/include ${GTEST})
+#set(GTEST /Users/ckroer/install/c++/googletest/googletest/)
+#include_directories(${GTEST}/include ${GTEST})
 
-set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp src/Games/FullGame.cpp src/Games/FullGame.h src/Solvers/Prox.cpp src/Solvers/Prox.h)
-add_executable(gameTest ${TEST_FILES})
 
-target_link_libraries(gameTest gtest gtest_main)
+enable_testing()
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp)
+add_executable(efg_test ${TEST_FILES})
+target_link_libraries(efg_test ${GTEST_BOTH_LIBRARIES})
+
+
+add_test(efg_test game_test)
+#target_link_libraries(game_test ${GTEST}/lib/libgtest.a ${GTEST}/lib/libgtest_main.a)
+
+
+
