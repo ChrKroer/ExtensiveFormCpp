@@ -2,24 +2,24 @@
 // Created by Christian Kroer on 11/19/15.
 //
 
-#include "FullGame.h"
+#include "full_game.h"
 
 
-FullGame::~FullGame() {
-
-}
-
-
-FullGame::FullGame() {
+efg_solve::FullGame::~FullGame() {
 
 }
 
 
-void FullGame::ReadFromZerosumFile(std::string path) {
+efg_solve::FullGame::FullGame() {
 
 }
 
 
-void FullGame::UtilityVector(double *realization_plan, double *utility, int player) {
+void efg_solve::FullGame::ReadFromZerosumFile(std::string path) {
+
+}
+
+
+void efg_solve::FullGame::UtilityVector(double *realization_plan, double *utility, int player) {
 
 }

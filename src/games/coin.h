@@ -10,20 +10,26 @@
 #include <string>
 #include "game.h"
 
-class Coin : public Game {
-public:
-  int num_sequences(int player) const;
-  int num_infosets(int player) const;
+namespace efg_solve {
 
-  int infoset_first_action(int player, int infoset) const;
-  int infoset_last_action(int player, int infoset) const;
-  int parent_sequence(int player, int infoset) const;
+  class Coin : public Game {
+  public:
+    int num_sequences(Player player) const;
+
+    int num_infosets(Player player) const;
+
+    int infoset_first_sequence(Player player, int infoset) const;
+
+    int infoset_last_sequence(Player player, int infoset) const;
+
+    int parent_sequence(Player player, int infoset) const;
 
 
-  void UtilityVector(double *relization_plan, double *utility_vector, int player) const;
+    void UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
 
-  double game_value() {return 0.375;} // hard-coded value of game for debugging ease
-};
+    double game_value() { return 0.375; } // hard-coded value of game for debugging ease
+  };
 
+}
 
 #endif //EFG_SOLVERS_COIN_H

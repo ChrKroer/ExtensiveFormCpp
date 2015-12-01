@@ -4,4 +4,4 @@
 
 #include "cfr.h"
 
-CFR::CFR(const Game &game) : GameSolver(game) { }
+efg_solve::CFR::CFR(Game *game) : GameSolver(game) { }

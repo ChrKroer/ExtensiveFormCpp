@@ -12,8 +12,8 @@ namespace efg_solve {
   class DilatedEntropy : public Prox {
 
   public:
-    virtual void Step(const std::vector<double> &utility, double step_size, Player player, std::vector<double> *strategy) const;
-    virtual void Step(const std::vector<double> &utility, double step_size, Player player, const std::vector<double> *previous, std::vector<double> *strategy) const;
+    virtual void Step(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const;
+    virtual void Step(double stepsize, Player player, std::vector<double> *utility, const std::vector<double> *previous, std::vector<double> *strategy) const;
   };
 
 }

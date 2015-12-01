@@ -3,12 +3,19 @@
 //
 
 #include "gtest/gtest.h"
+#include "../src/games/coin.h"
 
+using namespace efg_solve;
 
-TEST(game_test, testeq) {
-  EXPECT_EQ(1,0);
+class GameTest : public ::testing::Test {
+  Coin coin;
+
+};
+
+TEST_F(GameTest, coin_sequences_p1) {
+  EXPECT_EQ(coin.num_sequences(Player::P1),11);
 }
 
-TEST(game_test, testneq) {
-  EXPECT_NE(1,0);
+TEST_F(GameTest, coin_sequences_p2) {
+  EXPECT_EQ(coin.num_sequences(Player::P2),7);
 }

@@ -9,10 +9,11 @@
 #include "game_solver.h"
 #include "../Games/game.h"
 
-class CFR : public GameSolver {
-public:
-  CFR(const Game &game);
-};
-
+namespace efg_solve {
+  class CFR : public GameSolver {
+  public:
+    CFR(Game *game);
+  };
+}
 
 #endif //EFG_SOLVERS_COUNTERFACTUALREGRETMINIMIZATION_H

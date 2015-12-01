@@ -8,26 +8,31 @@
 #include <string>
 #include "game.h"
 
-class FullGame : public Game {
-public:
-  FullGame();
-  ~FullGame();
-  void ReadFromZerosumFile(std::string path);
+namespace efg_solve {
+  class FullGame : public Game {
+  public:
+    FullGame();
 
-  int num_sequences(int player) {return num_sequences_[player];}
-  int num_infosets(int player) {return num_info_sets_[player];}
+    ~FullGame();
 
-  void UtilityVector(double realization_plan[], double utility[], int player);
+    void ReadFromZerosumFile(std::string path);
 
-private:
-  int num_info_sets_[2];
-  int num_sequences_[2];
+    int num_sequences(int player) { return num_sequences_[player]; }
 
-  int nodes_[];
+    int num_infosets(int player) { return num_info_sets_[player]; }
+
+    void UtilityVector(double realization_plan[], double utility[], int player);
+
+  private:
+    int num_info_sets_[2];
+    int num_sequences_[2];
+
+    int nodes_[];
 
 
-  // game tree
-};
+    // game tree
+  };
 
+}
 
 #endif //EFG_SOLVE_FULLGAME_H
