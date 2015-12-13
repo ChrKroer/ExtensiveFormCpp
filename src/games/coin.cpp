@@ -16,7 +16,7 @@ int efg_solve::Coin::num_infosets(Player player) const {
 
 
 int efg_solve::Coin::infoset_first_sequence(Player player, int infoset) const {
-  return infoset * 2;
+  return infoset * 2 + 1;
 }
 
 int efg_solve::Coin::infoset_last_sequence(Player player, int infoset) const {

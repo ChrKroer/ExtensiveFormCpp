@@ -21,7 +21,7 @@ namespace efg_solve {
     // return the total number of sequences available to the player.
     virtual int num_sequences(Player player) const = 0;
 
-    virtual int num_infoSets(Player player) const = 0;
+    virtual int num_infosets(Player player) const = 0;
 
     virtual int infoset_first_sequence(Player player, int infoset) const = 0;
 
@@ -29,14 +29,16 @@ namespace efg_solve {
 
     virtual int parent_sequence(Player player, int infoset) const = 0;
 
+    double BestResponseValue(Player player, std::vector<double> *utility);
     /**
      * Fills in the utility vector of player using the strategy of the opposing player.
      * Expected values are computed such that each player wishes to maximize the returned values.
      */
-    virtual void UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const = 0;
+    virtual void UtilityVector(const std::vector<double> &opponent_strategy, std::vector<double> *utility, Player player) const = 0;
 
     Player other_player(Player player) { if (player == Player::P1) return Player::P2; else return Player::P1; }
   };
+
 
 }
 

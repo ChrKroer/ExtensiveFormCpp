@@ -13,8 +13,11 @@ namespace efg_solve {
 
   class Prox {
   public:
-    virtual void Step(const std::vector<double> &utility, double stepsize, Player player, std::vector<double> *strategy) const = 0;
-    virtual void Step(const std::vector<double> &utility, double stepsize, Player player, const std::vector<double> *previous, std::vector<double> *strategy) const = 0;
+    Prox(Game* game) {game_ = game; }
+
+    virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const = 0;
+    virtual void BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
+                                   std::vector<double> *utility, std::vector<double> *strategy) const = 0;
 
     void set_game(Game *game) { game_ = game; }
 

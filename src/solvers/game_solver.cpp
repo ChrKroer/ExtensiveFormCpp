@@ -16,9 +16,16 @@ efg_solve::GameSolver::~GameSolver() {
 
 }
 
-void efg_solve::GameSolver::ConvexCombination(std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player) {
+void efg_solve::GameSolver::ConvexCombination(const std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player) {
   int num_sequences = game_->num_sequences(player);
   for (int i = 0; i < num_sequences; ++i) {
     (*v2)[i] = stepsize * v1[i] + (1 - stepsize) * (*v2)[i];
+  }
+}
+
+void efg_solve::GameSolver::CopyContent(const std::vector<double> &v1, std::vector<double> *v2, Player player) {
+  int num_sequences = game_->num_sequences(player);
+  for (int i = 0; i < num_sequences; ++i) {
+    (*v2)[i] = v1[i];
   }
 }

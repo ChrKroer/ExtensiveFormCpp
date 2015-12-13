@@ -25,7 +25,9 @@ namespace efg_solve {
     int player_index(Player player) {if (player == Player::P1) return 0; else return 1;}
 
     /* sets v2 = (1-stepsize)*v2 + stepsize*v1 */
-    void ConvexCombination(std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player);
+    void ConvexCombination(const std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player);
+    /* Copies the contents of v1 into v2 for the number of sequences belonging to player */
+    void CopyContent(const std::vector<double> &v1, std::vector<double> *v2, Player player);
 
 
     // member variables

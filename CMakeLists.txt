@@ -14,7 +14,7 @@ set(SOURCE_FILES
         src/solvers/cfr.cpp src/solvers/cfr.h
         src/games/full_game.cpp src/games/full_game.h
         src/solvers/prox.h
-        src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h)
+        src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h src/config.cpp src/config.h src/games/game.cpp)
 add_executable(efg_solve ${SOURCE_FILES} src/main.cpp)
 
 
@@ -26,7 +26,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp)
+set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp test/dilated_entropy_test.cpp test/egt_test.cpp)
 add_executable(efg_test ${TEST_FILES})
 target_link_libraries(efg_test ${GTEST_BOTH_LIBRARIES})
 

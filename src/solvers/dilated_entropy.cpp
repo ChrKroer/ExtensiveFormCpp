@@ -4,42 +4,47 @@
 
 #include <cmath>
 #include "dilated_entropy.h"
+#include "../games/coin.h"
 
+efg_solve::DilatedEntropy::DilatedEntropy(Game *game) : Prox(game) {
 
-void efg_solve::DilatedEntropy::Step(double stepsize, Player player, std::vector<double> *utility,
-                                     std::vector<double> *strategy) const {
-  Step(stepsize, player, utility, NULL, strategy);
 }
-void efg_solve::DilatedEntropy::Step(double stepsize, Player player, std::vector<double> *utility, const std::vector<double> *previous,
-                                     std::vector<double> *strategy) const {
-  for (int infoset = game_->num_infoSets(player)-1; infoset >= 0; ++infoset) {
+
+void efg_solve::DilatedEntropy::ProxStep(double stepsize, Player player, std::vector<double> *utility,
+                                         std::vector<double> *strategy) const {
+  BregmanProjection(stepsize, player, NULL, utility, strategy);
+}
+void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
+                                                  std::vector<double> *utility,
+                                                  std::vector<double> *strategy) const {
+  for (int infoset = game_->num_infosets(player)-1; infoset >= 0; --infoset) {
     int first = game_->infoset_first_sequence(player, infoset);
-    int end = game_->infoset_last_sequence(player, infoset) + 1;
+    int last = game_->infoset_last_sequence(player, infoset);
     int parent = game_->parent_sequence(player, infoset);
 
     double offset = 0;
-    for (int sequence = first; sequence < end; ++sequence) {
+    for (int sequence = first; sequence <= last; ++sequence) {
       (*utility)[sequence] *= stepsize;
       offset = std::max(offset, (*utility)[sequence]);
     }
 
     double normalizer = 0;
     double ev = 0;
-    for (int sequence = first; sequence < end; ++sequence) {
-      double unscaled;
-      if (previous == NULL) {
-        unscaled = std::exp((*utility)[sequence] - offset);
-      } else {
-        unscaled = previous[sequence] * std::exp((*utility)[sequence] - offset);
+    for (int sequence = first; sequence <= last; ++sequence) {
+      if (previous == NULL) { // prox operator
+        (*strategy)[sequence] = std::exp((*utility)[sequence] - offset);
+      } else { // Bregman projection
+        (*strategy)[sequence] = (*previous)[sequence] * std::exp((*utility)[sequence] - offset);
       }
-      ev += unscaled * (*utility)[sequence];
-      normalizer += unscaled;
+      ev += (*strategy)[sequence] * (*utility)[sequence];
+      normalizer += (*strategy)[sequence];
     }
 
-    for (int sequence = first; sequence < end; ++sequence) {
+    for (int sequence = first; sequence <= last; ++sequence) {
       (*strategy)[sequence] /= normalizer;
     }
 
     (*utility)[parent] += ev / normalizer;
   }
 }
+

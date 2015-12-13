@@ -7,13 +7,17 @@
 
 
 #include "prox.h"
+#include "../games/coin.h"
 
 namespace efg_solve {
   class DilatedEntropy : public Prox {
 
   public:
-    virtual void Step(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const;
-    virtual void Step(double stepsize, Player player, std::vector<double> *utility, const std::vector<double> *previous, std::vector<double> *strategy) const;
+    DilatedEntropy(Game *game);
+
+    virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const;
+    virtual void BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
+                                   std::vector<double> *utility, std::vector<double> *strategy) const;
   };
 
 }
