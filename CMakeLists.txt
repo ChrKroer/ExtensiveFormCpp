@@ -8,13 +8,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
         src/solvers/game_solver.cpp src/solvers/game_solver.h
-        src/games/game.h
+        src/games/game.h src/games/game.cpp
         src/games/coin.cpp src/games/coin.h
         src/solvers/egt.cpp src/solvers/egt.h
         src/solvers/cfr.cpp src/solvers/cfr.h
         src/games/full_game.cpp src/games/full_game.h
         src/solvers/prox.h
-        src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h src/config.cpp src/config.h src/games/game.cpp)
+        src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h
+        src/config.cpp src/config.h)
 add_executable(efg_solve ${SOURCE_FILES} src/main.cpp)
 
 

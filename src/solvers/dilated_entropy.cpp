@@ -17,6 +17,7 @@ void efg_solve::DilatedEntropy::ProxStep(double stepsize, Player player, std::ve
 void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
                                                   std::vector<double> *utility,
                                                   std::vector<double> *strategy) const {
+  (*strategy)[0] = 1;
   for (int infoset = game_->num_infosets(player)-1; infoset >= 0; --infoset) {
     int first = game_->infoset_first_sequence(player, infoset);
     int last = game_->infoset_last_sequence(player, infoset);

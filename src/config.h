@@ -11,6 +11,7 @@ namespace efg_solve {
   namespace config {
     extern double mu;
     extern double gamma;
+    extern double coin_game_value;
 
     void load_config_file();
   }

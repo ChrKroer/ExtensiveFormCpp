@@ -22,13 +22,14 @@ double efg_solve::EGT::excessive_gap() {
   prox_->ProxStep(-1 / mu(Player::P1), Player::P1, &utility_, &best_response(Player::P1));
   double smooth_br_val_phi = utility_[0];
 
-  return smooth_br_val_f - smooth_br_val_phi;
+  return smooth_br_val_phi - smooth_br_val_f;
 }
 
 double efg_solve::EGT::gap(){
   game_->UtilityVector(average_strategy(Player::P1), &utility_, Player::P2);
   double br_val_f = game_->BestResponseValue(Player::P2, &utility_);
-  double br_val_phi = game_->BestResponseValue(Player::P1, &average_strategy(Player::P2));
+  game_->UtilityVector(average_strategy(Player::P2), &utility_, Player::P1);
+  double br_val_phi = -game_->BestResponseValue(Player::P1, &utility_);
   return br_val_f - br_val_phi;
 };
 
@@ -42,7 +43,9 @@ void efg_solve::EGT::Init() {
   mu_[0] = 1.0 / config::gamma;
   mu_[1] = config::mu;
 
-  InitUniform(&average_strategy(Player::P1), Player::P1);
+  game_->InitUniform(&average_strategy(Player::P1), Player::P1);
+  average_strategy(Player::P1)[0] = 1;
+  average_strategy(Player::P2)[0] = 1;
   // prox step P2
   game_->UtilityVector(average_strategy(Player::P1), &utility_, Player::P2);
   prox_->ProxStep(-1 / mu(Player::P2), Player::P2, &utility_, &average_strategy(Player::P2));
@@ -56,7 +59,7 @@ void efg_solve::EGT::Init() {
   printf("initial excessive gap = %0.04lf\n", excessive_gap());
 };
 
-void efg_solve::EGT::Iterate(int num_iterations) {
+void efg_solve::EGT::Run(int num_iterations) {
   for (int iterate = 0; iterate < num_iterations; ++iterate) {
     double tau = 2.0 / (iterations_ + 3);
 
@@ -96,15 +99,3 @@ void efg_solve::EGT::Iteration(Player player, Player opponent, double tau) {
   ConvexCombination(best_response(player), &average_strategy(player), tau, player);
   ConvexCombination(best_response(opponent), &average_strategy(opponent), tau, opponent);
 };
-
-void efg_solve::EGT::InitUniform(std::vector<double> *strategy, Player player) {
-  for (int infoset = game_->num_infosets(player)-1; infoset >= 0; --infoset) {
-    int first = game_->infoset_first_sequence(player, infoset);
-    int last = game_->infoset_last_sequence(player, infoset);
-    double uniform_probability = 1.0 / (last - first + 1);
-
-    for (int i = first; i <= last; ++i) {
-      (*strategy)[i] = uniform_probability;
-    }
-  }
-}

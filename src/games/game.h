@@ -30,6 +30,10 @@ namespace efg_solve {
     virtual int parent_sequence(Player player, int infoset) const = 0;
 
     double BestResponseValue(Player player, std::vector<double> *utility);
+    double GameValue(const std::array<std::vector<double>, 2> &strategy_profile);
+    // additional version with optionally given utility vector to avoid allocation
+    double GameValue(const std::array<std::vector<double>, 2> &strategy_profile, std::vector<double> *utility);
+    void InitUniform(std::vector<double> *strategy, Player player);
     /**
      * Fills in the utility vector of player using the strategy of the opposing player.
      * Expected values are computed such that each player wishes to maximize the returned values.

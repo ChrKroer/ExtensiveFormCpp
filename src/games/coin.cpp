@@ -71,9 +71,9 @@ void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::ve
 
 
     // heads fold, index 4
-    (*utility)[4] = (*utility)[6] = 2;
+    (*utility)[4] = (*utility)[6] = -2;
     // tails fold
-    (*utility)[8] = (*utility)[10] = 2;
+    (*utility)[8] = (*utility)[10] = -1;
   } else {
     double p1hhb = strategy[1] * strategy[3];
     double p1hhf = strategy[1] * strategy[4];
