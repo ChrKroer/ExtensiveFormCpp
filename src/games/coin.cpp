@@ -55,6 +55,8 @@ void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::ve
   std::fill_n((*utility).begin(), num_sequences(player), 0);
 
   if (player == Player::P1) {
+    double p2h = strategy[1];
+    double p2t = strategy[2];
     double p2hbc = strategy[1] * strategy[3];
     double p2hbf = strategy[1] * strategy[4];
     double p2tbc = strategy[2] * strategy[5];
@@ -71,9 +73,11 @@ void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::ve
 
 
     // heads fold, index 4
-    (*utility)[4] = (*utility)[6] = -2;
+    (*utility)[4] = p2h * (-2);
+    (*utility)[6] = p2t * (-2);
     // tails fold
-    (*utility)[8] = (*utility)[10] = -1;
+    (*utility)[8] = p2h * (-1);
+    (*utility)[10] = p2t * (-1);
   } else {
     double p1hhb = strategy[1] * strategy[3];
     double p1hhf = strategy[1] * strategy[4];
@@ -84,6 +88,9 @@ void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::ve
     double p1ttb = strategy[2] * strategy[9];
     double p1ttf = strategy[2] * strategy[10];
 
+    // P1 folds
+    (*utility)[1]  = p1hhf * 2 + p1thf * 1;
+    (*utility)[2]  = p1ttf * 1 + p1htf * 2;
     // heads call, index 3
     (*utility)[3]  = p1hhb * -3 + p1thb * 2;
     // heads fold, index 4

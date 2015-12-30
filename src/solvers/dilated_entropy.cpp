@@ -5,6 +5,7 @@
 #include <cmath>
 #include "dilated_entropy.h"
 #include "../games/coin.h"
+#include "../supportcode/vector_calculus.h"
 
 efg_solve::DilatedEntropy::DilatedEntropy(Game *game) : Prox(game) {
 
@@ -17,6 +18,7 @@ void efg_solve::DilatedEntropy::ProxStep(double stepsize, Player player, std::ve
 void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
                                                   std::vector<double> *utility,
                                                   std::vector<double> *strategy) const {
+  vector_calculus::vector_scale(utility, -stepsize, game_->num_sequences(player));
   (*strategy)[0] = 1;
   for (int infoset = game_->num_infosets(player)-1; infoset >= 0; --infoset) {
     int first = game_->infoset_first_sequence(player, infoset);
@@ -25,7 +27,7 @@ void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player
 
     double offset = 0;
     for (int sequence = first; sequence <= last; ++sequence) {
-      (*utility)[sequence] *= stepsize;
+      //(*utility)[sequence] *= (-stepsize); // scale the gradient by the stepsize
       offset = std::max(offset, (*utility)[sequence]);
     }
 

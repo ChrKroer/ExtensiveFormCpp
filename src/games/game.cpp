@@ -33,7 +33,7 @@ double efg_solve::Game::GameValue(const std::array<std::vector<double>, 2> &stra
     int parent = parent_sequence(Player::P1, infoset);
 
     for (int i = first; i <= last; ++i) {
-      (*utility)[parent] += strategy_profile[1][i] * (*utility)[i];
+      (*utility)[parent] += strategy_profile[0][i] * (*utility)[i];
     }
   }
   return (*utility)[0];

@@ -29,6 +29,7 @@ namespace efg_solve {
     void Iteration(Player player, Player opponent, double tau);
     double mu(Player player) {if (player == Player::P1) return mu_[0]; else return mu_[1]; }
 
+    void mu(Player player, double mu) { if (player == Player::P1) mu_[0] = mu; else mu_[1] = mu; }
 
 
     // The prox operator used for taking steps.

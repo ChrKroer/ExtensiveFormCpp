@@ -7,8 +7,8 @@
 
 namespace efg_solve {
   namespace config {
-    double mu = 9.5;
-    double gamma = 1.5;
+    double mu = 5;
+    double gamma = 0.2;
     double coin_game_value = 0.375;
   }
 

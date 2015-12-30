@@ -24,6 +24,8 @@ namespace efg_solve {
     }
 
     virtual void TearDown() {
+      delete coin_egt;
+      delete coin_prox;
       delete coin;
     }
 
@@ -37,8 +39,10 @@ namespace efg_solve {
   };
 
   TEST_F(EGTTest, egt_coin_excessive_gap_positive) {
-    config::mu = 100;
-    config::gamma = 100;
+    delete coin_egt;
+    config::mu = 10;
+    config::gamma = 0.1;
+    coin_egt = new EGT(coin, coin_prox);
     EXPECT_GT(coin_egt->excessive_gap(), 0);
   }
 
@@ -58,8 +62,14 @@ namespace efg_solve {
   }
 
   TEST_F(EGTTest, egt_coin_game_value) {
-    coin_egt->Run(1000);
+    int num_rounds = 9;
+    for (int i = 0; i < num_rounds; i++) {
+      coin_egt->Run(10);
+      double gap = coin_egt->gap();
+      EXPECT_GT(gap, 0);
+      //EXPECT_GT(coin_egt->excessive_gap(), 0);
+    }
 
-    EXPECT_EQ(efg_solve::config::coin_game_value, coin->GameValue(coin_egt->strategy_profile(), &coin_utility));
+    EXPECT_NEAR(efg_solve::config::coin_game_value, coin->GameValue(coin_egt->strategy_profile(), &coin_utility), 0.1);
   }
 }

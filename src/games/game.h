@@ -29,6 +29,8 @@ namespace efg_solve {
 
     virtual int parent_sequence(Player player, int infoset) const = 0;
 
+    int player_id(Player player) const { if (player == Player::P1) return 0; else return 1; }
+
     double BestResponseValue(Player player, std::vector<double> *utility);
     double GameValue(const std::array<std::vector<double>, 2> &strategy_profile);
     // additional version with optionally given utility vector to avoid allocation

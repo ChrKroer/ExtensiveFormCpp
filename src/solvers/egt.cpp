@@ -16,11 +16,11 @@ efg_solve::EGT::~EGT() {
 double efg_solve::EGT::excessive_gap() {
   game_->UtilityVector(average_strategy(Player::P1), &utility_, Player::P2);
   prox_->ProxStep(-1 / mu(Player::P2), Player::P2, &utility_, &best_response(Player::P2));
-  double smooth_br_val_f = utility_[0];
+  double smooth_br_val_f = utility_[0] / mu(Player::P2);
 
   game_->UtilityVector(average_strategy(Player::P2), &utility_, Player::P1);
   prox_->ProxStep(-1 / mu(Player::P1), Player::P1, &utility_, &best_response(Player::P1));
-  double smooth_br_val_phi = utility_[0];
+  double smooth_br_val_phi = utility_[0] / mu(Player::P1);
 
   return smooth_br_val_phi - smooth_br_val_f;
 }
@@ -55,7 +55,7 @@ void efg_solve::EGT::Init() {
   prox_->BregmanProjection(-config::gamma, Player::P1, &average_strategy(Player::P1), &utility_,
                            &average_strategy(Player::P1));
 
-  printf("initial gap           = %0.04lf\n", gap());
+  printf("\ninitial gap           = %0.04lf\n", gap());
   printf("initial excessive gap = %0.04lf\n", excessive_gap());
 };
 
@@ -65,11 +65,13 @@ void efg_solve::EGT::Run(int num_iterations) {
 
     if (mu_[1] > mu_[0]) {
       Iteration(Player::P1, Player::P2, tau);
-      mu_[1] = (1.0 - tau) * mu_[1];
+      mu_[1] = (1 - tau) * mu_[1];
     } else {
       Iteration(Player::P2, Player::P1, tau);
-      mu_[0] = (1.0 - tau) * mu_[0];
+      mu_[0] = (1 - tau) * mu_[0];
     }
+    printf("\ninitial gap           = %0.04lf\n", gap());
+    printf("initial excessive gap = %0.04lf\n", excessive_gap());
     iterations_++;
   }
 }
