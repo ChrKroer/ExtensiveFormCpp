@@ -23,7 +23,7 @@ int efg_solve::Coin::infoset_last_sequence(Player player, int infoset) const {
   return (infoset+1) * 2;
 }
 
-int efg_solve::Coin::parent_sequence(Player player, int infoset) const {
+int efg_solve::Coin::infoset_parent_sequence(Player player, int infoset) const {
   if (player == Player::P1) {
     switch (infoset) {
       case 0: return 0;
@@ -34,7 +34,6 @@ int efg_solve::Coin::parent_sequence(Player player, int infoset) const {
       default:
         printf("infoset does not exist");
         return -1;
-        break;
     }
   } else {
     switch(infoset) {
@@ -44,23 +43,22 @@ int efg_solve::Coin::parent_sequence(Player player, int infoset) const {
       default:
         printf("infoset does not exist");
         return -1;
-        break;
     }
   }
 }
 
 
-void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const {
-// void efg_solve::Coin::UtilityVector(double *strategy, double *(*utility), Player player) const {
+void efg_solve::Coin::UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const {
+// void efg_solve::Coin::UtilityVector(double *(*strategy), double *(*utility), Player player) const {
   std::fill_n((*utility).begin(), num_sequences(player), 0);
 
   if (player == Player::P1) {
-    double p2h = strategy[1];
-    double p2t = strategy[2];
-    double p2hbc = strategy[1] * strategy[3];
-    double p2hbf = strategy[1] * strategy[4];
-    double p2tbc = strategy[2] * strategy[5];
-    double p2tbf = strategy[2] * strategy[6];
+    double p2h = (*strategy)[1];
+    double p2t = (*strategy)[2];
+    double p2hbc = (*strategy)[1] * (*strategy)[3];
+    double p2hbf = (*strategy)[1] * (*strategy)[4];
+    double p2tbc = (*strategy)[2] * (*strategy)[5];
+    double p2tbf = (*strategy)[2] * (*strategy)[6];
 
     // heads heads bet, index 3
     (*utility)[3]  = p2hbc * 3 + p2hbf * 2;
@@ -79,14 +77,14 @@ void efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::ve
     (*utility)[8] = p2h * (-1);
     (*utility)[10] = p2t * (-1);
   } else {
-    double p1hhb = strategy[1] * strategy[3];
-    double p1hhf = strategy[1] * strategy[4];
-    double p1htb = strategy[1] * strategy[5];
-    double p1htf = strategy[1] * strategy[6];
-    double p1thb = strategy[2] * strategy[7];
-    double p1thf = strategy[2] * strategy[8];
-    double p1ttb = strategy[2] * strategy[9];
-    double p1ttf = strategy[2] * strategy[10];
+    double p1hhb = (*strategy)[1] * (*strategy)[3];
+    double p1hhf = (*strategy)[1] * (*strategy)[4];
+    double p1htb = (*strategy)[1] * (*strategy)[5];
+    double p1htf = (*strategy)[1] * (*strategy)[6];
+    double p1thb = (*strategy)[2] * (*strategy)[7];
+    double p1thf = (*strategy)[2] * (*strategy)[8];
+    double p1ttb = (*strategy)[2] * (*strategy)[9];
+    double p1ttf = (*strategy)[2] * (*strategy)[10];
 
     // P1 folds
     (*utility)[1]  = p1hhf * 2 + p1thf * 1;

@@ -7,12 +7,19 @@
 
 
 #include <vector>
+#include <cmath>
 
 namespace efg_solve {
   class vector_calculus {
   public:
+
     static void vector_scale(std::vector<double> *vec, double scalar, int size) {
       for (int i = 0; i < size; i++) (*vec)[i] *= scalar;
+    }
+
+    static bool check_for_nan(std::vector<double> &vec) {
+      for (int i = 0; i < vec.size(); i++) if (isnan(vec[i])) return true;
+      return false;
     }
   };
 

@@ -16,6 +16,8 @@ namespace efg_solve {
     Prox(Game* game) {game_ = game; }
 
     virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const = 0;
+    // previous is never modified. However, it is made a pointer to allow passing NULL in.
+    // Passing in NULL makes it behave like a regular ProxStep.
     virtual void BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
                                    std::vector<double> *utility, std::vector<double> *strategy) const = 0;
 

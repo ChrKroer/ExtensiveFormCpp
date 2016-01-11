@@ -28,19 +28,23 @@ namespace efg_solve {
     int num_infosets(Player player) const;
 
     int infoset_first_sequence(Player player, int infoset) const {
-      return information_set_first_sequence_[player_id(player)][infoset];
+      return infoset_first_sequence_[player_id(player)][infoset];
     }
 
     int infoset_last_sequence(Player player, int infoset) const {
-      return information_set_last_sequence_[player_id(player)][infoset];
+      return infoset_last_sequence_[player_id(player)][infoset];
     }
 
-    int parent_sequence(Player player, int infoset) const {
-      return information_set_parent_sequence_[player_id(player)][infoset];
+    int infoset_parent_sequence(Player player, int infoset) const {
+      return infoset_parent_sequence_[player_id(player)][infoset];
+    }
+
+    int infoset_num_sequences(Player player, int infoset) const {
+      return infoset_num_actions_[player_id(player)][infoset];
     }
 
 
-    void UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
+    void UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const;
 
   private:
     // index of the root node
@@ -54,26 +58,32 @@ namespace efg_solve {
 
     // individual node information
     std::vector<int> node_utility_;
+    std::vector<bool> node_leaf_;
     std::vector<int> node_parent_node_;
     std::vector<double> node_nature_probability_;
     std::vector<std::string> node_names_;
     std::array<std::vector<int>, 2> node_prior_sequence_;
+    std::array<std::vector<int>, 2> node_prior_infoset_;
+    std::array<std::vector<int>, 2> node_prior_action_;
 
     // individual sequence information
     std::array<std::vector<int>, 2> parent_sequence_;
-    std::array<std::vector<std::string>, 2> sequence_name_;
     // gives the prior sequences leading to the node.
     std::array<std::vector<std::vector<int>>, 2> opponent_leaf_sequences_;
-    std::array<std::vector<std::vector<int>>, 2> sequence_payoffs_;
+    std::array<std::vector<std::vector<double>>, 2> sequence_payoffs_;
 
 
     // individual information set information
     // [player][info set index] returns std::vector of indices of the nodes in the information set
-    std::array<std::vector < std::vector<int> >, 2> information_sets_;
-    std::array<std::vector<bool>, 2> information_sets_seen_;
-    std::array<std::vector<int>, 2> information_set_first_sequence_;
-    std::array<std::vector<int>, 2> information_set_last_sequence_;
-    std::array<std::vector<int>, 2> information_set_parent_sequence_;
+    std::array< std::vector<std::vector<int>>, 2> information_sets_;
+    std::array<std::vector<bool>, 2> infoset_seen_;
+    std::array<std::vector<int>, 2> infoset_first_sequence_;
+    std::array<std::vector<int>, 2> infoset_last_sequence_;
+    std::array<std::vector<int>, 2> infoset_parent_sequence_;
+    std::array<std::vector<int>, 2> infoset_num_actions_;
+    std::array<std::vector<std::string>, 2> infoset_action_names_;
+    std::array<std::vector<int>, 2> infoset_prior_infoset_;
+    std::array<std::vector<int>, 2> infoset_prior_action_;
 
 
     bool is_leaf(int node_id) {
@@ -86,6 +96,10 @@ namespace efg_solve {
     void CreatePlayerNode(std::vector <std::string> line);
     void CreateGameFromFile(std::string filename);
     void NodeSetGeneralInformation(std::vector<std::string> line);
+    void OrderSequences();
+    void OrderSequences(Player player);
+    void OrderLeaves();
+    double HistoryNatureProbability(int node_id);
   };
 }
 #endif

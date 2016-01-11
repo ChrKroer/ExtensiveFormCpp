@@ -21,8 +21,7 @@ namespace efg_solve {
 
     virtual void Run(int num_iterations) = 0;
 
-    //auto strategy_profile() -> const std::vector<double> (&)[2] {return average_strategy_; }
-    std::array<std::vector<double>, 2> strategy_profile() { return average_strategy_; }
+    std::array<std::vector<double>, 2> &strategy_profile() { return average_strategy_; }
 
     std::vector<double> &average_strategy(Player player) {
       if (player == Player::P1) return average_strategy_[0]; else return average_strategy_[1];

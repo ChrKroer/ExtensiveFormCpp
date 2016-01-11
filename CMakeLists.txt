@@ -20,7 +20,7 @@ set(SOURCE_FILES
         src/supportcode/stringfunctions.cpp src/supportcode/stringfunctions.h
         src/games/leduc.cpp src/games/leduc.h
         src/games/game_reader.cpp src/games/game_reader.cpp
-        )
+        src/games/GameTree.cpp src/games/GameTree.h)
 add_executable(efg_solve ${SOURCE_FILES} src/main.cpp)
 
 

@@ -23,11 +23,10 @@ void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player
   for (int infoset = game_->num_infosets(player)-1; infoset >= 0; --infoset) {
     int first = game_->infoset_first_sequence(player, infoset);
     int last = game_->infoset_last_sequence(player, infoset);
-    int parent = game_->parent_sequence(player, infoset);
+    int parent = game_->infoset_parent_sequence(player, infoset);
 
-    double offset = 0;
-    for (int sequence = first; sequence <= last; ++sequence) {
-      //(*utility)[sequence] *= (-stepsize); // scale the gradient by the stepsize
+    double offset = (*utility)[first];
+    for (int sequence = first+1; sequence <= last; ++sequence) {
       offset = std::max(offset, (*utility)[sequence]);
     }
 
