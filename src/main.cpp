@@ -13,15 +13,12 @@ int main(int argc, char* argv[]) {
         // delimiter (usually space) and the last one is the version number.
         // The CmdLine object parses the argv array based on the Arg objects
         // that it contains.
-        TCLAP::CmdLine cmd("Command description message", ' ', "0.9");
+        TCLAP::CmdLine cmd("Library for solving extensive-form games.", ' ', "");
 
         // Define a value argument and add it to the command line.
         // A value arg defines a flag and a type of value that it expects,
         // such as "-n Bishop".
-        TCLAP::ValueArg<std::string> nameArg("n","name","Name to print",true,"homer","string");
-
-        // Add the argument nameArg to the CmdLine object. The CmdLine object
-        // uses this Arg to parse the command line.
+        TCLAP::ValueArg<std::string> nameArg("a","algorithm","Which algorithm to use",true,"egt","string");
         cmd.add( nameArg );
 
         // Define a switch and add it to the command line.

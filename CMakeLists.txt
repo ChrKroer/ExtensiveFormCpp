@@ -4,7 +4,7 @@ project(efg_solve)
 
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fsanitize=address")
 
 set(SOURCE_FILES
         src/solvers/game_solver.cpp src/solvers/game_solver.h
