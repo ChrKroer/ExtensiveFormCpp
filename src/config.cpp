@@ -18,6 +18,9 @@ std::string original_game_files = "/Users/ckroer/Documents/research/zerosum/orig
 std::string coin_path = original_game_files + "coin.txt";
 std::string kuhn_path = original_game_files + "kuhn.txt";
 std::string prsl_path = original_game_files + "prsl.txt";
-std::string leduc_path = original_game_files + "leduc.txt";
+std::string leduc_path = original_game_files + "leduc2.txt";
+
+std::string leduc_equilibrium_p1 = "/Users/ckroer/Documents/research/zerosum/equilibrium_strategies/leducx.txt";
+std::string leduc_equilibrium_p2 = "/Users/ckroer/Documents/research/zerosum/equilibrium_strategies/leducy.txt";
 }
 }

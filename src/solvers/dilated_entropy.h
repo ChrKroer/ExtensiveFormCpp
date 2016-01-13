@@ -13,7 +13,7 @@ namespace efg_solve {
   class DilatedEntropy : public Prox {
 
   public:
-    DilatedEntropy(Game *game);
+    DilatedEntropy(Game::SPtr game);
 
     virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const;
     virtual void BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,

@@ -4,10 +4,9 @@
 
 #include <cmath>
 #include "dilated_entropy.h"
-#include "../games/coin.h"
 #include "../supportcode/vector_calculus.h"
 
-efg_solve::DilatedEntropy::DilatedEntropy(Game *game) : Prox(game) {
+efg_solve::DilatedEntropy::DilatedEntropy(Game::SPtr game) : Prox(std::move(game)) {
 
 }
 

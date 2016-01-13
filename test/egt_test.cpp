@@ -2,6 +2,7 @@
 // Created by Christian Kroer on 12/12/15.
 //
 
+#include <memory>
 #include <gtest/gtest.h>
 #include "../src/solvers/dilated_entropy.h"
 #include "../src/solvers/egt.h"
@@ -12,21 +13,21 @@ namespace efg_solve {
 class EGTTest : public ::testing::Test {
  public:
   virtual void SetUp() {
-    coin = new GameZerosumPackage(config::coin_path);
-    coin_prox = new DilatedEntropy(coin);
-    coin_egt = new EGT(coin, coin_prox);
+    coin = GameZerosumPackage::CreateGameFromFile(config::coin_path);
+    coin_prox = DilatedEntropy::SPtr(new DilatedEntropy(coin));
+    coin_egt = EGT::UPtr(new EGT(coin, coin_prox));
 
-    kuhn = new GameZerosumPackage(config::kuhn_path);
-    kuhn_prox = new DilatedEntropy(kuhn);
-    kuhn_egt = new EGT(kuhn, kuhn_prox);
+    kuhn = GameZerosumPackage::CreateGameFromFile(config::kuhn_path);
+    kuhn_prox = DilatedEntropy::SPtr(new DilatedEntropy(kuhn));
+    kuhn_egt = EGT::UPtr(new EGT(kuhn, kuhn_prox));
 
-    prsl = new GameZerosumPackage(config::prsl_path);
-    prsl_prox = new DilatedEntropy(prsl);
-    prsl_egt = new EGT(prsl, prsl_prox);
+    prsl = GameZerosumPackage::CreateGameFromFile(config::prsl_path);
+    prsl_prox = DilatedEntropy::SPtr(new DilatedEntropy(prsl));
+    prsl_egt = EGT::UPtr(new EGT(prsl, prsl_prox));
 
-    leduc = new GameZerosumPackage(config::leduc_path);
-    leduc_prox = new DilatedEntropy(leduc);
-    leduc_egt = new EGT(leduc, leduc_prox);
+    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path);
+    leduc_prox = DilatedEntropy::SPtr(new DilatedEntropy(leduc));
+    leduc_egt = EGT::UPtr(new EGT(leduc, leduc_prox));
 
     int max_sequences = std::max( { coin->num_sequences(Player::P1), coin->num_sequences(Player::P2),
                                     kuhn->num_sequences(Player::P1), kuhn->num_sequences(Player::P2),
@@ -41,26 +42,23 @@ class EGTTest : public ::testing::Test {
   }
 
   virtual void TearDown() {
-    delete coin_egt;
-    delete coin_prox;
-    delete coin;
   }
 
-  GameZerosumPackage *coin;
-  DilatedEntropy *coin_prox;
-  EGT *coin_egt;
+  GameTree::SPtr coin;
+  DilatedEntropy::SPtr coin_prox;
+  EGT::UPtr coin_egt;
 
-  GameZerosumPackage *kuhn;
-  DilatedEntropy *kuhn_prox;
-  EGT *kuhn_egt;
+  GameTree::SPtr kuhn;
+  DilatedEntropy::SPtr kuhn_prox;
+  EGT::UPtr kuhn_egt;
 
-  GameZerosumPackage *prsl;
-  DilatedEntropy *prsl_prox;
-  EGT *prsl_egt;
+  GameTree::SPtr prsl;
+  DilatedEntropy::SPtr prsl_prox;
+  EGT::UPtr prsl_egt;
 
-  GameZerosumPackage *leduc;
-  DilatedEntropy *leduc_prox;
-  EGT *leduc_egt;
+  GameTree::SPtr leduc;
+  DilatedEntropy::SPtr leduc_prox;
+  EGT::UPtr leduc_egt;
 
   std::array<std::vector<double>, 2> strategy;
   std::vector<double> utility;
@@ -68,10 +66,9 @@ class EGTTest : public ::testing::Test {
 };
 
 TEST_F(EGTTest, egt_coin_excessive_gap_positive) {
-  delete coin_egt;
   config::mu = 10;
   config::gamma = 0.1;
-  coin_egt = new EGT(coin, coin_prox);
+  coin_egt = EGT::UPtr(new EGT(coin, coin_prox));
   EXPECT_GT(coin_egt->excessive_gap(), 0);
 }
 

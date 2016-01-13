@@ -4,4 +4,4 @@
 
 #include "cfr.h"
 
-efg_solve::CFR::CFR(Game *game) : GameSolver(game) { }
+efg_solve::CFR::CFR(Game::SPtr game) : GameSolver(game) { }

@@ -6,23 +6,27 @@
 #include "gtest/gtest.h"
 #include "../src/games/game_reader.h"
 #include "../src/config.h"
+#include "../src/games/strategy_reader.h"
 
 using namespace efg_solve;
 
 class GameReaderTest : public ::testing::Test {
 public:
-  GameZerosumPackage* coin;
-  GameZerosumPackage* kuhn;
+  GameTree::SPtr coin;
+  GameTree::SPtr kuhn;
+  GameTree::SPtr leduc;
   std::array<std::vector<double>, 2> strategy;
   std::vector<double> utility;
 
 
   virtual void SetUp() {
-    coin = new GameZerosumPackage(config::coin_path);
-    kuhn = new GameZerosumPackage(config::kuhn_path);
+    coin = GameZerosumPackage::CreateGameFromFile(config::coin_path);
+    kuhn = GameZerosumPackage::CreateGameFromFile(config::kuhn_path);
+    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path);
 
     int max_sequences = std::max( { coin->num_sequences(Player::P1), coin->num_sequences(Player::P2),
                                     kuhn->num_sequences(Player::P1), kuhn->num_sequences(Player::P2),
+                                    leduc->num_sequences(Player::P1), leduc->num_sequences(Player::P2),
                                   });
     strategy[0].resize((unsigned long) max_sequences, 0);
     strategy[1].resize((unsigned long) max_sequences, 0);
@@ -33,9 +37,7 @@ public:
   }
 
   virtual void TearDown() {
-    delete coin;
   }
-
 };
 
 
@@ -106,4 +108,13 @@ TEST_F(GameReaderTest, kuhn_equilibrium_value) {
 
   double game_val = kuhn->GameValue(&strategy);
   EXPECT_NEAR(config::kuhn_game_value, game_val, 0.00001);
+}
+
+TEST_F(GameReaderTest, leduc_equilibrium_value) {
+  strategy[0] = StrategyReader::ReadStrategy(config::leduc_equilibrium_p1);
+  leduc->ToBehavioralStrategy(&strategy[0], Player::P1);
+  strategy[1] = StrategyReader::ReadStrategy(config::leduc_equilibrium_p2);
+  leduc->ToBehavioralStrategy(&strategy[1], Player::P2);
+  double game_val = leduc->GameValue(&strategy);
+  EXPECT_NEAR(config::leduc_game_value, game_val, 0.00001);
 }

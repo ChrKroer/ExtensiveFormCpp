@@ -15,8 +15,9 @@ namespace efg_solve {
   class EGT : public GameSolver {
 
   public:
+    typedef std::unique_ptr<EGT> UPtr;
 
-    EGT(Game *game, Prox *prox);
+    EGT(Game::SPtr game, Prox::SPtr prox);
 
     virtual ~EGT();
 
@@ -33,7 +34,7 @@ namespace efg_solve {
 
 
     // The prox operator used for taking steps.
-    const Prox *prox_;
+    const Prox::SPtr prox_;
     // array for storing the smoothed best response
     std::array<std::vector<double>, 2> best_response_;
     // Intermediate array for Bregman step

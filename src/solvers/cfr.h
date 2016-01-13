@@ -12,7 +12,7 @@
 namespace efg_solve {
   class CFR : public GameSolver {
   public:
-    CFR(Game *game);
+    CFR(Game::SPtr game);
   };
 }
 

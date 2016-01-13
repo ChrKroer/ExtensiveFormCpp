@@ -5,9 +5,8 @@
 #include <cmath>
 #include "egt.h"
 #include "../config.h"
-#include "../supportcode/vector_calculus.h"
 
-efg_solve::EGT::EGT(Game *game, Prox *prox) : GameSolver(game), prox_(prox) {
+efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox) : GameSolver(std::move(game)), prox_(std::move(prox)) {
   Init();
 }
 

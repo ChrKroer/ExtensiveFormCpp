@@ -11,8 +11,8 @@ using namespace efg_solve;
 class DilatedEntropyTest : public ::testing::Test {
 public:
   virtual void SetUp() {
-    coin = new Coin();
-    coin_prox = new DilatedEntropy(coin);
+    coin = std::make_shared<Coin>();
+    coin_prox = std::make_shared<DilatedEntropy>(coin);
 
     coin_strategy[0].resize(coin->num_sequences(Player::P1), 0);
     coin_strategy[1].resize(coin->num_sequences(Player::P2), 0);
@@ -23,11 +23,10 @@ public:
   }
 
   virtual void TearDown() {
-    delete coin;
   }
 
-  Coin *coin;
-  DilatedEntropy *coin_prox;
+  Game::SPtr coin;
+  DilatedEntropy::SPtr coin_prox;
 
   std::vector<double> coin_strategy[2];
   std::vector<double> coin_utility;

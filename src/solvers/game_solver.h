@@ -15,7 +15,7 @@ namespace efg_solve {
 
   class GameSolver {
   public:
-    GameSolver(Game *game_);
+    GameSolver(Game::SPtr game_);
 
     virtual ~GameSolver();
 
@@ -37,7 +37,7 @@ namespace efg_solve {
 
 
     // member variables
-    Game *game_;
+    Game::SPtr game_;
     unsigned int iterations_ = 0;
 
     std::array<std::vector<double>, 2> average_strategy_;

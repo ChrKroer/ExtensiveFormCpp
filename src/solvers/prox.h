@@ -13,7 +13,9 @@ namespace efg_solve {
 
   class Prox {
   public:
-    Prox(Game* game) {game_ = game; }
+    typedef std::shared_ptr<Prox> SPtr;
+
+    Prox(Game::SPtr game) {game_ = std::move(game); }
 
     virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const = 0;
     // previous is never modified. However, it is made a pointer to allow passing NULL in.
@@ -21,7 +23,7 @@ namespace efg_solve {
     virtual void BregmanProjection(double stepsize, Player player, const std::vector<double> *previous,
                                    std::vector<double> *utility, std::vector<double> *strategy) const = 0;
 
-    void set_game(Game *game) { game_ = game; }
+    void set_game(std::shared_ptr<Game> game) { game_ = game; }
 
     void set_weights(std::vector<int> weights) { weights_ = weights; }
 
@@ -29,7 +31,7 @@ namespace efg_solve {
     std::vector<int> weights_;
   protected:
     // since games can be quite large, we do not want to keep a copy around.
-    Game *game_;
+    Game::SPtr game_;
   };
 
 }
