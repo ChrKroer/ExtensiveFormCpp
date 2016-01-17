@@ -6,6 +6,7 @@
 #define EFG_SOLVE_LEDUC_H
 
 
+#include <string>
 #include "game.h"
 
 namespace efg_solve {
@@ -26,6 +27,7 @@ namespace efg_solve {
     void UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const;
 
     double game_value() { return -0.0856064; } // hard-coded value of game for debugging ease
+
   };
 }
 

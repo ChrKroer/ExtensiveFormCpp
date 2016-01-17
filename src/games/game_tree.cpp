@@ -71,6 +71,8 @@ void efg_solve::GameTree::init() {
   infoset_parent_sequence_[1].resize((unsigned long) num_infosets_[1]);
   infoset_num_actions_[0].resize((unsigned long) num_infosets_[0]);
   infoset_num_actions_[1].resize((unsigned long) num_infosets_[1]);
+  infoset_sequence_names_[0].resize((unsigned long) num_infosets_[0]);
+  infoset_sequence_names_[1].resize((unsigned long) num_infosets_[1]);
 
   num_sequences_[0] = 1;
   num_sequences_[1] = 1;
@@ -91,7 +93,8 @@ void efg_solve::GameTree::AddPlayerNode(int node_id,
                                         std::string name,
                                         efg_solve::Player player,
                                         int infoset,
-                                        std::vector<int> child_ids) {
+                                        std::vector<int> child_ids,
+                                        std::vector<std::string> sequence_names) {
   SetGenericNodeInfo(node_id, name, player == Player::P1 ? NodeType::P1 : NodeType::P2);
   infosets_[player_id(player)][infoset].push_back(node_id);
   node_infoset_[node_id] = infoset;
@@ -101,6 +104,7 @@ void efg_solve::GameTree::AddPlayerNode(int node_id,
     node_children_[node_id].push_back(child_id);
     if (!infoset_seen_[player_id(player)][infoset]) {
       num_sequences_[player_id(player)]++;
+      infoset_sequence_names_[player_id(player)][infoset].push_back(sequence_names[i]);
     }
   }
   if (!infoset_seen_[player_id(player)][infoset]) {
@@ -146,10 +150,14 @@ void efg_solve::GameTree::OrderSequences() {
 
 void efg_solve::GameTree::OrderSequences(Player player) {
   int player_idx = player_id(player);
+  sequence_names_[player_idx].push_back("");
   int current = 1;
   for (int infoset = 0; infoset < num_infosets(player); infoset++) {
     infoset_first_sequence_[player_idx][infoset] = current;
-    current += infoset_num_actions_[player_idx][infoset];
+    for (int i = 0; i < infoset_num_actions_[player_idx][infoset]; i++) {
+      sequence_names_[player_idx].push_back(infoset_sequence_names_[player_idx][infoset][i]);
+      current++;
+    }
     infoset_last_sequence_[player_idx][infoset] = current-1;
   }
 }

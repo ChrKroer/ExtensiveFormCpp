@@ -18,12 +18,16 @@ namespace efg_solve {
     typedef std::unique_ptr<EGT> UPtr;
 
     EGT(Game::SPtr game, Prox::SPtr prox);
+    EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma);
 
     virtual ~EGT();
 
     double excessive_gap();
     double gap();
+    int sequences_touched() const { return sequences_touched_; }
     virtual void Run(int num_iterations);
+
+    void WarmStart(std::array<std::vector<double>, 2> strategy_profile);
   private:
     std::vector<double> &best_response(Player player) {if (player == Player::P1) return best_response_[0]; else return best_response_[1];}
     void Init();
@@ -42,6 +46,8 @@ namespace efg_solve {
     // array for storing expected values of sequences
     std::vector<double> utility_;
     std::array<double, 2> mu_;
+
+    int sequences_touched_ = 0;
   };
 
 }

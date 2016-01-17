@@ -22,5 +22,10 @@ std::string leduc_path = original_game_files + "leduc.txt";
 
 std::string leduc_equilibrium_p1 = "/Users/ckroer/Documents/research/zerosum/equilibrium_strategies/leducx.txt";
 std::string leduc_equilibrium_p2 = "/Users/ckroer/Documents/research/zerosum/equilibrium_strategies/leducy.txt";
+
+std::string data_folder = "/Users/ckroer/Documents/research/equilibrium_computation/data/";
+std::string strategies_folder = data_folder + "/strategies/";
+std::string cfrx_strategy_path = strategies_folder + "leduc_cfrx.txt";
+std::string cfry_strategy_path = strategies_folder + "leduc_cfry.txt";
 }
 }

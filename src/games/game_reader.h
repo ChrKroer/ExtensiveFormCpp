@@ -14,20 +14,25 @@
 
 namespace efg_solve {
 
-  class GameZerosumPackage {
-  public:
-    GameZerosumPackage();
+enum class GameName{
+  LEDUC = 0, OTHER = 1
+};
+class GameZerosumPackage {
+ public:
+  GameZerosumPackage();
 
-    ~GameZerosumPackage();
+  ~GameZerosumPackage();
 
-    static GameTree::SPtr CreateGameFromFile(std::string filename);
+  static GameTree::SPtr CreateGameFromFile(std::string filename, GameName = GameName::OTHER);
 
-  private:
-    static GameTree::SPtr ReadGameInfoLine(const std::vector<std::string> &split_line);
-    static void CreateNatureNode(std::vector<std::string> line, GameTree::SPtr tree);
-    static void CreateLeafNode(std::vector<std::string> line, GameTree::SPtr tree);
-    static void CreatePlayerNode(std::vector<std::string> line, GameTree::SPtr tree);
-    static void NodeSetGeneralInformation(std::vector<std::string> line, GameTree::SPtr tree);
-  };
+ private:
+  static GameTree::SPtr ReadGameInfoLine(const std::vector<std::string> &split_line);
+  static void CreateNatureNode(std::vector<std::string> line, GameTree::SPtr tree);
+  static void CreateLeafNode(std::vector<std::string> line, GameTree::SPtr tree);
+  static void CreatePlayerNode(std::vector<std::string> line, GameTree::SPtr tree, GameName game);
+  static void NodeSetGeneralInformation(std::vector<std::string> line, GameTree::SPtr tree);
+
+  static std::string GetLeducSequenceName(std::string nodename, std::string actionname, Player player);
+};
 }
 #endif

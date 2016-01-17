@@ -22,7 +22,7 @@ public:
   virtual void SetUp() {
     coin = GameZerosumPackage::CreateGameFromFile(config::coin_path);
     kuhn = GameZerosumPackage::CreateGameFromFile(config::kuhn_path);
-    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path);
+    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path, GameName::LEDUC);
 
     int max_sequences = std::max( { coin->num_sequences(Player::P1), coin->num_sequences(Player::P2),
                                     kuhn->num_sequences(Player::P1), kuhn->num_sequences(Player::P2),
@@ -111,10 +111,11 @@ TEST_F(GameReaderTest, kuhn_equilibrium_value) {
 }
 
 TEST_F(GameReaderTest, leduc_equilibrium_value) {
-  strategy[0] = StrategyReader::ReadStrategy(config::leduc_equilibrium_p1);
+  strategy[0] = StrategyReader::ReadIdStrategyIntegerIds(config::leduc_equilibrium_p1);
   leduc->ToBehavioralStrategy(&strategy[0], Player::P1);
-  strategy[1] = StrategyReader::ReadStrategy(config::leduc_equilibrium_p2);
+  strategy[1] = StrategyReader::ReadIdStrategyIntegerIds(config::leduc_equilibrium_p2);
   leduc->ToBehavioralStrategy(&strategy[1], Player::P2);
   double game_val = leduc->GameValue(&strategy);
   EXPECT_NEAR(config::leduc_game_value, game_val, 0.00001);
 }
+

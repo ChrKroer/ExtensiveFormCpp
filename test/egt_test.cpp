@@ -8,6 +8,7 @@
 #include "../src/solvers/egt.h"
 #include "../src/config.h"
 #include "../src/games/game_reader.h"
+#include "../src/games/strategy_reader.h"
 
 namespace efg_solve {
 class EGTTest : public ::testing::Test {
@@ -25,7 +26,7 @@ class EGTTest : public ::testing::Test {
     prsl_prox = DilatedEntropy::SPtr(new DilatedEntropy(prsl));
     prsl_egt = EGT::UPtr(new EGT(prsl, prsl_prox));
 
-    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path);
+    leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path, GameName::LEDUC);
     leduc_prox = DilatedEntropy::SPtr(new DilatedEntropy(leduc));
     leduc_egt = EGT::UPtr(new EGT(leduc, leduc_prox));
 
@@ -34,11 +35,8 @@ class EGTTest : public ::testing::Test {
                                     prsl->num_sequences(Player::P1), prsl->num_sequences(Player::P2),
                                     leduc->num_sequences(Player::P1), leduc->num_sequences(Player::P2)
                                   });
-    strategy[0].resize((unsigned long) max_sequences, 0);
-    strategy[1].resize((unsigned long) max_sequences, 0);
 
     utility.resize((unsigned long) max_sequences, 0);
-    previous.resize((unsigned long) max_sequences, 0);
   }
 
   virtual void TearDown() {
@@ -60,9 +58,7 @@ class EGTTest : public ::testing::Test {
   DilatedEntropy::SPtr leduc_prox;
   EGT::UPtr leduc_egt;
 
-  std::array<std::vector<double>, 2> strategy;
   std::vector<double> utility;
-  std::vector<double> previous;
 };
 
 TEST_F(EGTTest, egt_coin_excessive_gap_positive) {
@@ -105,4 +101,13 @@ TEST_F(EGTTest, egt_leduc_game_value) {
   leduc_egt->Run(1000);
   EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(&leduc_egt->strategy_profile(), &utility), 0.1);
 }
+
+TEST_F(EGTTest, leduc_cfr_start) {
+  std::vector<double> strategy0 = StrategyReader::ReadStrategyStringIds(config::cfrx_strategy_path, leduc->sequence_names(Player::P1), leduc->num_sequences(Player::P1));
+  std::vector<double> strategy1 = StrategyReader::ReadStrategyStringIds(config::cfry_strategy_path, leduc->sequence_names(Player::P2), leduc->num_sequences(Player::P2));
+  leduc_egt->WarmStart({strategy0, strategy1});
+  leduc_egt->Run(1000);
+  EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(&leduc_egt->strategy_profile(), &utility), 0.1);
+}
+
 }

@@ -24,6 +24,11 @@ extern std::string leduc_path;
 
 extern std::string leduc_equilibrium_p1;
 extern std::string leduc_equilibrium_p2;
+
+extern std::string data_folder;
+extern std::string strategies_folder;
+extern std::string cfrx_strategy_path;
+extern std::string cfry_strategy_path;
 }
 }
 

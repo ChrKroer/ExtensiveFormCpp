@@ -48,13 +48,14 @@ class GameTree: public Game {
     return infoset_num_actions_[player_id(player)][infoset];
   }
 
+  std::vector<std::string> &sequence_names(Player player) { return sequence_names_[player_id(player)]; }
 
   void UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const;
 
   // this methods needs to be called after adding all nodes to the game.
   void ComputeGameValues();
   void AddPlayerNode(int node_id, std::string name, Player player,
-                     int infoset, std::vector<int> child_ids);
+                     int infoset, std::vector<int> child_ids, std::vector<std::string> sequence_names);
 
   void AddNatureNode(int node_id, std::string name,
                      std::vector<int> child_ids, std::vector<double> probabilities);
@@ -85,6 +86,7 @@ class GameTree: public Game {
   // gives the prior sequences leading to the node.
   std::array<std::vector<std::vector<int>>, 2> opponent_leaf_sequences_;
   std::array<std::vector<std::vector<double>>, 2> sequence_payoffs_;
+  std::array<std::vector<std::string>, 2> sequence_names_;
 
 
   // individual information set information
@@ -95,6 +97,7 @@ class GameTree: public Game {
   std::array<std::vector<int>, 2> infoset_last_sequence_;
   std::array<std::vector<int>, 2> infoset_parent_sequence_;
   std::array<std::vector<int>, 2> infoset_num_actions_;
+  std::array<std::vector<std::vector<std::string>>, 2> infoset_sequence_names_;
 
 
 

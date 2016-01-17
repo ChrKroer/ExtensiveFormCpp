@@ -6,7 +6,14 @@
 #include "egt.h"
 #include "../config.h"
 
-efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox) : GameSolver(std::move(game)), prox_(std::move(prox)) {
+efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox) : EGT(game, prox, config::mu, config::gamma) {
+
+}
+
+
+efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma) : GameSolver(std::move(game)), prox_(std::move(prox)) {
+  mu_[0] = mu;
+  mu_[1] = 1.0/gamma;
   Init();
 }
 
@@ -42,9 +49,6 @@ void efg_solve::EGT::Init() {
   best_response_[1].resize((unsigned long) game_->num_sequences(Player::P2), 0);
   intermediate_.resize(max_sequences, 0);
   utility_.resize(max_sequences, 0);
-
-  mu_[0] = 1.0 / config::gamma;
-  mu_[1] = config::mu;
 
   game_->InitUniform(&average_strategy(Player::P1), Player::P1);
   average_strategy(Player::P1)[0] = 1;
@@ -101,4 +105,12 @@ void efg_solve::EGT::Iteration(Player player, Player opponent, double tau) {
   /* update current iterates */
   ConvexCombination(best_response(player), &average_strategy(player), tau, player);
   ConvexCombination(best_response(opponent), &average_strategy(opponent), tau, opponent);
+
+  sequences_touched_ += 6 * game_->num_sequences(player);
+  sequences_touched_ += 5 * game_->num_sequences(game_->other_player(player));
 };
+
+void efg_solve::EGT::WarmStart(std::array<std::vector<double>, 2> strategy_profile) {
+  CopyContent(strategy_profile[0], &average_strategy_[0], Player::P1);
+  CopyContent(strategy_profile[1], &average_strategy_[1], Player::P2);
+}

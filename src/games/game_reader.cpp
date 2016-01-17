@@ -1,4 +1,5 @@
 #include <boost/algorithm/string.hpp>
+#include <sstream>
 #include "game_reader.h"
 #include "../supportcode/stringfunctions.h"
 #include "game_tree.h"
@@ -17,7 +18,7 @@ efg_solve::GameZerosumPackage::~GameZerosumPackage() {
 
 
 
-efg_solve::GameTree::SPtr efg_solve::GameZerosumPackage::CreateGameFromFile(string filename) {
+efg_solve::GameTree::SPtr efg_solve::GameZerosumPackage::CreateGameFromFile(string filename, GameName game) {
   std::shared_ptr<GameTree> tree;
   ifstream file(filename);
 
@@ -37,7 +38,7 @@ efg_solve::GameTree::SPtr efg_solve::GameZerosumPackage::CreateGameFromFile(stri
       } else if (node_id < tree->num_chance_histories()) { // nature node
         CreateNatureNode(split_line, tree);
       } else { // player node
-        CreatePlayerNode(split_line, tree);
+        CreatePlayerNode(split_line, tree, game);
       }
     }
   }
@@ -67,7 +68,7 @@ void efg_solve::GameZerosumPackage::CreateLeafNode(vector<string> line, std::sha
   tree->AddLeafNode(node_id, name, utility);
 }
 
-void efg_solve::GameZerosumPackage::CreatePlayerNode(vector<string> line, std::shared_ptr<GameTree> tree) {
+void efg_solve::GameZerosumPackage::CreatePlayerNode(vector<string> line, std::shared_ptr<GameTree> tree, GameName game) {
   int node_id = stoi(line[0]);
   std::string name = line[1];
   Player player = stoi(line[2]) == 0 ? Player::P1 : Player::P2;
@@ -75,13 +76,39 @@ void efg_solve::GameZerosumPackage::CreatePlayerNode(vector<string> line, std::s
   int num_actions = stoi(line[4]);
 
   std::vector<int> child_ids;
+  std::vector<std::string> sequence_names;
   for (int action = 0; action < num_actions; action++) {
     int child_id = stoi(line[6+2* action]);
+    std::string action_name = line[5+2* action];
+    if (game == GameName::LEDUC) {
+      sequence_names.push_back(GetLeducSequenceName(name, action_name, player));
+    } else {
+      sequence_names.push_back(action_name);
+    }
     child_ids.push_back(child_id);
   }
 
-  tree->AddPlayerNode(node_id, name, player, infoset, child_ids);
+  tree->AddPlayerNode(node_id, name, player, infoset, child_ids, sequence_names);
 }
+
+
+std::string efg_solve::GameZerosumPackage::GetLeducSequenceName(std::string nodename, std::string actionname, Player player) {
+  for (int i = 0; i < nodename.length(); ++i) {
+    if (nodename[i] == 'r') nodename[i] = '1';
+  }
+
+  std::stringstream ss;
+  ss << (player == Player::P1 ? nodename[1] : nodename[2]);
+  for (int i = 4; i < nodename.length(); i++ ) {
+    if (nodename[i] != '/') {
+      ss << nodename[i];
+    }
+  }
+  // if (nodename.length() > 4) ss << nodename.substr(4);
+  ss << (actionname == "r" ? "1" : actionname);
+  return ss.str();
+}
+
 
 void efg_solve::GameZerosumPackage::CreateNatureNode(vector<string> line, std::shared_ptr<GameTree> tree) {
   int node_id = stoi(line[0]);
