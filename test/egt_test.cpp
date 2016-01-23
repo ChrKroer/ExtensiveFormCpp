@@ -8,7 +8,7 @@
 #include "../src/solvers/egt.h"
 #include "../src/config.h"
 #include "../src/games/game_reader.h"
-#include "../src/games/strategy_reader.h"
+#include "../src/games/strategy_io.h"
 
 namespace efg_solve {
 class EGTTest : public ::testing::Test {
@@ -63,7 +63,7 @@ class EGTTest : public ::testing::Test {
 
 TEST_F(EGTTest, egt_coin_excessive_gap_positive) {
   config::mu = 10;
-  config::gamma = 0.1;
+  config::gamma = 1;
   coin_egt = EGT::UPtr(new EGT(coin, coin_prox));
   EXPECT_GT(coin_egt->excessive_gap(), 0);
 }
@@ -87,27 +87,33 @@ TEST_F(EGTTest, egt_coin_improvent_in_bound) {
 
 TEST_F(EGTTest, egt_coin_game_value) {
   coin_egt->Run(1000);
-  EXPECT_NEAR(efg_solve::config::coin_game_value, coin->GameValue(&coin_egt->strategy_profile(), &utility), 0.1);
+  EXPECT_NEAR(efg_solve::config::coin_game_value, coin->GameValue(coin_egt->strategy_profile(), &utility), 0.1);
 }
 TEST_F(EGTTest, egt_kuhn_game_value) {
   kuhn_egt->Run(100000);
-  EXPECT_NEAR(efg_solve::config::kuhn_game_value, kuhn->GameValue(&kuhn_egt->strategy_profile(), &utility), 0.1);
+  EXPECT_NEAR(efg_solve::config::kuhn_game_value, kuhn->GameValue(kuhn_egt->strategy_profile(), &utility), 0.1);
 }
 TEST_F(EGTTest, egt_prsl_game_value) {
   prsl_egt->Run(1000);
-  EXPECT_NEAR(efg_solve::config::prsl_game_value, prsl->GameValue(&prsl_egt->strategy_profile(), &utility), 0.1);
+  EXPECT_NEAR(efg_solve::config::prsl_game_value, prsl->GameValue(prsl_egt->strategy_profile(), &utility), 0.1);
 }
 TEST_F(EGTTest, egt_leduc_game_value) {
   leduc_egt->Run(1000);
-  EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(&leduc_egt->strategy_profile(), &utility), 0.1);
+  EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(leduc_egt->strategy_profile(), &utility), 0.01);
 }
 
+TEST_F(EGTTest, egt_leduc_excessive_gap_small_enough) {
+  leduc_egt = EGT::UPtr(new EGT(leduc, leduc_prox, 1.5, 1));
+  EXPECT_LT(leduc_egt->excessive_gap(), 0.01);
+}
+
+
 TEST_F(EGTTest, leduc_cfr_start) {
-  std::vector<double> strategy0 = StrategyReader::ReadStrategyStringIds(config::cfrx_strategy_path, leduc->sequence_names(Player::P1), leduc->num_sequences(Player::P1));
-  std::vector<double> strategy1 = StrategyReader::ReadStrategyStringIds(config::cfry_strategy_path, leduc->sequence_names(Player::P2), leduc->num_sequences(Player::P2));
+  std::vector<double> strategy0 = StrategyIO::ReadStrategyStringIds(config::cfrx_strategy_path, leduc->sequence_names(Player::P1), leduc->num_sequences(Player::P1));
+  std::vector<double> strategy1 = StrategyIO::ReadStrategyStringIds(config::cfry_strategy_path, leduc->sequence_names(Player::P2), leduc->num_sequences(Player::P2));
   leduc_egt->WarmStart({strategy0, strategy1});
   leduc_egt->Run(1000);
-  EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(&leduc_egt->strategy_profile(), &utility), 0.1);
+  EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(leduc_egt->strategy_profile(), &utility), 0.01);
 }
 
 }

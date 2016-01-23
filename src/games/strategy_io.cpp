@@ -4,11 +4,11 @@
 
 #include <fstream>
 #include <map>
-#include "strategy_reader.h"
+#include "strategy_io.h"
 #include "../supportcode/stringfunctions.h"
 
 
-std::vector<double> StrategyReader::ReadIdStrategyIntegerIds(std::string &filename) {
+std::vector<double> StrategyIO::ReadIdStrategyIntegerIds(std::string &filename) {
   std::vector<double> strategy;
 
   std::ifstream infile(filename);
@@ -27,9 +27,9 @@ std::vector<double> StrategyReader::ReadIdStrategyIntegerIds(std::string &filena
   return strategy;
 }
 
-std::vector<double> StrategyReader::ReadStrategyStringIds(const std::string &filename,
-                                                                 const std::vector<std::string> &sequence_names,
-                                                                 int num_sequences) {
+std::vector<double> StrategyIO::ReadStrategyStringIds(const std::string &filename,
+                                                      const std::vector<std::string> &sequence_names,
+                                                      int num_sequences) {
   std::map<std::string, int>  map;
   for (int seq = 0; seq < sequence_names.size(); seq++) {
     map[sequence_names[seq]] = seq;

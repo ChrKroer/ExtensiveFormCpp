@@ -13,10 +13,12 @@ efg_solve::GameSolver::~GameSolver() {
 
 }
 
-void efg_solve::GameSolver::ConvexCombination(const std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player) {
+void efg_solve::GameSolver::Combination(double w1, const std::vector<double> &v1,
+                                        double w2, std::vector<double> *v2,
+                                        Player player) {
   int num_sequences = game_->num_sequences(player);
   for (int i = 0; i < num_sequences; ++i) {
-    (*v2)[i] = stepsize * v1[i] + (1 - stepsize) * (*v2)[i];
+    (*v2)[i] = w1 * v1[i] + w2 * (*v2)[i];
   }
 }
 

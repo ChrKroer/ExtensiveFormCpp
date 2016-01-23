@@ -27,11 +27,12 @@ namespace efg_solve {
       if (player == Player::P1) return average_strategy_[0]; else return average_strategy_[1];
     }
 
+    int num_iterations() const { return iterations_; }
   protected:
     int player_index(Player player) {if (player == Player::P1) return 0; else return 1;}
 
     /* sets v2 = (1-stepsize)*v2 + stepsize*v1 */
-    void ConvexCombination(const std::vector<double> &v1, std::vector<double> *v2, double stepsize, Player player);
+    void Combination(double w1, const std::vector<double> &v1, double w2, std::vector<double> *v2, Player player);
     /* Copies the contents of v1 into v2 for the number of sequences belonging to player */
     void CopyContent(const std::vector<double> &v1, std::vector<double> *v2, Player player);
 

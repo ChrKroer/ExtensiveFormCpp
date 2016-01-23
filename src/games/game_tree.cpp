@@ -31,20 +31,81 @@ int efg_solve::GameTree::num_sequences(Player player) const {
   return (int) num_sequences_[player_id(player)];
 }
 
-void efg_solve::GameTree::UtilityVector(std::vector<double> *strategy, std::vector<double> *utility,
-                                         Player player) const {
+int efg_solve::GameTree::UtilityVector(const std::vector<double> &strategy,
+                                        std::vector<double> *utility,
+                                        efg_solve::Player player,
+                                        double threshold) const {
+  if (threshold == 2) {
+    return UtilityVector(strategy, utility, player);
+  } else {
+    std::fill(std::begin(*utility), std::end(*utility), 0);
+    return UtilityVectorRecursive(strategy, utility, player, threshold, root_, 0, 0, 1);
+  }
+}
+
+int efg_solve::GameTree::UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility,
+                                                Player player) const {
+  UtilityVector(strategy, utility, player, 0);
+}
+int efg_solve::GameTree::UtilityVectorRecursive(const std::vector<double> &strategy,
+                                      std::vector<double> *utility,
+                                      efg_solve::Player player,
+                                      double threshold,
+                                      int current_node,
+                                      int parent_sequence_p1,
+                                      int parent_sequence_p2,
+                                      double probability
+) const {
+  if (node_type_[current_node] == NodeType::LEAF) {
+    if (player == Player::P1) {
+      (*utility)[parent_sequence_p1] += probability * node_utility_[current_node];
+    } else {
+      (*utility)[parent_sequence_p2] += -probability * node_utility_[current_node];
+    }
+    return 1;
+  }
+  int sum = 0;
+  for (int i = 0; i < node_children_[current_node].size(); i++) {
+    int child_id = node_children_[current_node][i];
+    int sequence_p1 = parent_sequence_p1;
+    int sequence_p2 = parent_sequence_p2;
+    double new_probability = probability * node_nature_probability_[child_id];
+    if (node_type_[current_node] != NodeType::NATURE) {
+      Player node_player = node_type_[current_node] == NodeType::P1 ? Player::P1 : Player::P2;
+      int first_seq = node_infoset_[current_node] == -1 ? 0 : infoset_first_sequence_[player_id(node_player)][node_infoset_[current_node]];
+      int new_sequence = first_seq + i;
+      if (node_player == Player::P1) {
+        sequence_p1 = new_sequence;
+      } else {
+        sequence_p2 = new_sequence;
+      }
+      if (node_player != player) new_probability *= strategy[new_sequence];
+    }
+    if (new_probability < threshold) {
+      //printf("continuing\n");
+      continue;
+    }
+
+    sum += UtilityVectorRecursive(strategy, utility, player, threshold, child_id, sequence_p1, sequence_p2, new_probability);
+  }
+  return sum + 1;
+}
+
+int efg_solve::GameTree::UtilityVectorIterative(const std::vector<double> &strategy, std::vector<double> *utility,
+                                       Player player) const {
   std::fill(std::begin(*utility), std::end(*utility), 0);
-  ToSequenceForm(strategy, other_player(player));
+  // TODO: handle lack of sequence form conversion here
   for (int i = 0; i < num_sequences(player); ++i) {
     for (int j = 0; j < opponent_leaf_sequences_[player_id(player)][i].size(); ++j) {
       int opponent_sequence_id = opponent_leaf_sequences_[player_id(player)][i][j];
       double payoff = sequence_payoffs_[player_id(player)][i][j];
-      double sequence_prob = (*strategy)[opponent_sequence_id];
+      double sequence_prob = strategy[opponent_sequence_id];
       (*utility)[i] += payoff * sequence_prob;
     }
   }
-  ToBehavioralStrategy(strategy, other_player(player));
+  return num_nodes_;
 }
+
 
 void efg_solve::GameTree::init() {
   // individual node information

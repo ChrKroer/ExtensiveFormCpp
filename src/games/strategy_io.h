@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-class StrategyReader {
+class StrategyIO {
  public:
   static std::vector<double> ReadIdStrategyIntegerIds(std::string &filename);
   /*

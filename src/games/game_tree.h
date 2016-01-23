@@ -50,7 +50,8 @@ class GameTree: public Game {
 
   std::vector<std::string> &sequence_names(Player player) { return sequence_names_[player_id(player)]; }
 
-  void UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const;
+  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
+  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player, double threshold) const;
 
   // this methods needs to be called after adding all nodes to the game.
   void ComputeGameValues();
@@ -107,6 +108,16 @@ class GameTree: public Game {
   void OrderSequences(Player player);
   void OrderSequencesRec(int current_node, int parent_sequence_p1, int parent_sequence_p2, double nature_probability);
   void SetLeafData(int node, int sequence_p1, int sequence_p2, double nature_probability);
+  int UtilityVectorIterative(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
+  int UtilityVectorRecursive(const std::vector<double> &strategy,
+                             std::vector<double> *utility,
+                             Player player,
+                             double threshold,
+                             int current_node,
+                             int parent_sequence_p1,
+                             int parent_sequence_p2,
+                             double probability
+  ) const;
 };
 }
 

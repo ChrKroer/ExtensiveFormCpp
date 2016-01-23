@@ -33,11 +33,16 @@ namespace efg_solve {
 
     // returned value is the amount the intput player can increase their utility by best response.
     double BestResponseValue(Player player, std::vector<double> *utility) const;
-    double GameValue(std::array<std::vector<double>, 2> *strategy_profile) const;
+    double MaxRegret(const std::array<std::vector<double>, 2> &strategy_profile) const {
+      double x,y;
+      return MaxRegret(strategy_profile, x, y);
+    }
+    double MaxRegret(const std::array<std::vector<double>, 2> &strategy_profile, double &regret1, double &regret2) const;
+    double GameValue(const std::array<std::vector<double>, 2> &strategy_profile) const;
     // additional version with optionally given utility vector to avoid allocation
-    double GameValue(std::array<std::vector<double>, 2> *strategy_profile, std::vector<double> *utility) const;
+    double GameValue(const std::array<std::vector<double>, 2> &strategy_profile, std::vector<double> *utility) const;
     // same as above, but allows choice of which player is used for computing the utility vector.
-    double GameValue(std::array<std::vector<double>, 2> *strategy_profile, std::vector<double> *utility, Player player) const;
+    double GameValue(const std::array<std::vector<double>, 2> &strategy_profile, std::vector<double> *utility, Player player) const;
     // converts the strategy to a sequence form strategy. Assumes that a behavioral strategy is given.
     void ToSequenceForm(std::vector<double> *strategy, Player player) const;
     // converts the strategy to a behavioral strategy. Assumes that a sequence form strategy is given.
@@ -47,7 +52,8 @@ namespace efg_solve {
      * Fills in the utility vector of player using the strategy of the opposing player.
      * Expected values are computed such that the input player wishes to maximize the returned values.
      */
-    virtual void UtilityVector(std::vector<double> *opponent_strategy, std::vector<double> *utility, Player player) const = 0;
+    virtual int UtilityVector(const std::vector<double> &opponent_strategy, std::vector<double> *utility, Player player) const = 0;
+    virtual int UtilityVector(const std::vector<double> &opponent_strategy, std::vector<double> *utility, Player player, double threshold) const = 0;
 
     Player other_player(Player player) const { if (player == Player::P1) return Player::P2; else return Player::P1; }
   };

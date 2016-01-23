@@ -19,15 +19,20 @@ namespace efg_solve {
 
     EGT(Game::SPtr game, Prox::SPtr prox);
     EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma);
+    EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma, double threshold);
 
     virtual ~EGT();
 
     double excessive_gap();
+    double excessive_gap(double &ev_x, double &ev_y);
     double gap();
+    double gap(double &ev_x, double &ev_y);
     int sequences_touched() const { return sequences_touched_; }
     virtual void Run(int num_iterations);
 
     void WarmStart(std::array<std::vector<double>, 2> strategy_profile);
+
+    const std::array<double, 2> mu() { return mu_; }
   private:
     std::vector<double> &best_response(Player player) {if (player == Player::P1) return best_response_[0]; else return best_response_[1];}
     void Init();
@@ -46,6 +51,8 @@ namespace efg_solve {
     // array for storing expected values of sequences
     std::vector<double> utility_;
     std::array<double, 2> mu_;
+    double gamma_;
+    double threshold_;
 
     int sequences_touched_ = 0;
   };

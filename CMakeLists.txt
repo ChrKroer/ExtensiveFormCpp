@@ -6,6 +6,7 @@ project(efg_solve)
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fsanitize=address")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 
 set(SOURCE_FILES
         src/solvers/game_solver.cpp src/solvers/game_solver.h
@@ -22,7 +23,7 @@ set(SOURCE_FILES
         src/games/leduc.cpp src/games/leduc.h
         src/games/game_reader.cpp src/games/game_reader.cpp
         src/games/game_tree.cpp src/games/game_tree.h
-        src/games/strategy_reader.cpp src/games/strategy_reader.h
+        src/games/strategy_io.cpp src/games/strategy_io.h
         src/supportcode/filewriter.cpp src/supportcode/filewriter.h)
 add_executable(efg_solve ${SOURCE_FILES} src/main.cpp)
 
@@ -35,7 +36,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp test/dilated_entropy_test.cpp test/egt_test.cpp test/game_reader_test.cpp test/strategy_reader_test.cpp)
+set(TEST_FILES ${SOURCE_FILES} test/game_test.cpp test/dilated_entropy_test.cpp test/egt_test.cpp test/game_reader_test.cpp test/strategy_io_test.cpp test/game_tree_test.cpp)
 add_executable(efg_test ${TEST_FILES})
 target_link_libraries(efg_test ${GTEST_BOTH_LIBRARIES})
 

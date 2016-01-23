@@ -19,25 +19,40 @@ double efg_solve::Game::BestResponseValue(Player player, std::vector<double> *ut
   return (*utility)[0];
 }
 
-double efg_solve::Game::GameValue(std::array<std::vector<double>, 2> *strategy_profile) const {
+
+double efg_solve::Game::MaxRegret(const std::array<std::vector<double>, 2> &strategy_profile, double &regret1, double &regret2) const {
+  int max_seq = std::max(num_sequences(Player::P1), num_sequences(Player::P2));
+  std::vector<double> utility((unsigned long) max_seq, 0);
+  double game_value = GameValue(strategy_profile, &utility);
+
+  UtilityVector(strategy_profile[player_id(Player::P2)], &utility, Player::P1);
+  regret1 = BestResponseValue(Player::P1, &utility) - game_value;
+
+  UtilityVector(strategy_profile[player_id(Player::P1)], &utility, Player::P2);
+  regret2 = BestResponseValue(Player::P2, &utility) + game_value;
+
+  return std::max(regret1, regret2);
+}
+
+double efg_solve::Game::GameValue(const std::array<std::vector<double>, 2> &strategy_profile) const {
   int max_seq = std::max(num_sequences(Player::P1), num_sequences(Player::P2));
   std::vector<double> utility((unsigned long) max_seq, 0);
   return GameValue(strategy_profile, &utility);
 }
 
-double efg_solve::Game::GameValue(std::array<std::vector<double>, 2> *strategy_profile, std::vector<double> *utility) const {
+double efg_solve::Game::GameValue(const std::array<std::vector<double>, 2> &strategy_profile, std::vector<double> *utility) const {
   return GameValue(strategy_profile, utility, Player::P1);
 }
 
-double efg_solve::Game::GameValue(std::array<std::vector<double>, 2> *strategy_profile, std::vector<double> *utility, Player player) const {
-  UtilityVector(&(*strategy_profile)[player_id(other_player(player))], utility, player);
+double efg_solve::Game::GameValue(const std::array<std::vector<double>, 2> &strategy_profile, std::vector<double> *utility, Player player) const {
+  UtilityVector(strategy_profile[player_id(other_player(player))], utility, player);
   for (int infoset = num_infosets(player)-1; infoset >= 0; --infoset) {
     int first = infoset_first_sequence(player, infoset);
     int last = infoset_last_sequence(player, infoset);
     int parent = infoset_parent_sequence(player, infoset);
 
     for (int i = first; i <= last; ++i) {
-      double sequence_probability = (*strategy_profile)[player_id(player)][i];
+      double sequence_probability = strategy_profile[player_id(player)][i];
       double expected_payoff = (*utility)[i];
       (*utility)[parent] += sequence_probability * expected_payoff;
     }

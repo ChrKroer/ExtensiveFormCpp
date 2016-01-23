@@ -13,13 +13,13 @@ public:
   virtual void SetUp() {
     coin = new Coin();
 
-    coin_strategy[0].resize(coin->num_sequences(Player::P1), 0);
-    coin_strategy[1].resize(coin->num_sequences(Player::P2), 0);
+    coin_strategy[0].resize((unsigned long) coin->num_sequences(Player::P1), 0);
+    coin_strategy[1].resize((unsigned long) coin->num_sequences(Player::P2), 0);
     coin_strategy[0][0] = 1;
     coin_strategy[1][0] = 1;
 
     int max_actions = std::max(coin->num_sequences(Player::P1), coin->num_sequences(Player::P2));
-    coin_utility.resize(max_actions, 0);
+    coin_utility.resize((unsigned long) max_actions, 0);
   }
 
   virtual void TearDown() {
@@ -68,14 +68,14 @@ TEST_F(GameTest, coin_game_value) {
   coin_strategy[0][3] = 1; // P1 bets
   coin_strategy[1][3] = 1; // P2 calls
 
-  EXPECT_EQ(3, coin->GameValue(&coin_strategy, &coin_utility));
+  EXPECT_EQ(3, coin->GameValue(coin_strategy, &coin_utility));
 }
 
 // uniform strategies EV: (0.125)*(-2-2-1-1)+(0.0625)*(3-3-2+2+2+2+1+1) = -0.375
 TEST_F(GameTest, coin_game_value2) {
   coin->InitUniform(&coin_strategy[0], Player::P1);
   coin->InitUniform(&coin_strategy[1], Player::P2);
-  EXPECT_EQ(-0.375, coin->GameValue(&coin_strategy, &coin_utility));
+  EXPECT_EQ(-0.375, coin->GameValue(coin_strategy, &coin_utility));
 }
 
 

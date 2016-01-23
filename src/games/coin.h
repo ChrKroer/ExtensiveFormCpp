@@ -25,7 +25,8 @@ namespace efg_solve {
     int infoset_parent_sequence(Player player, int infoset) const;
 
 
-    void UtilityVector(std::vector<double> *strategy, std::vector<double> *utility, Player player) const;
+    int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
+    int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player, double threshold) const;
 
     double game_value() { return 0.375; } // hard-coded value of game for debugging ease
   };
