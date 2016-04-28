@@ -67,8 +67,8 @@ void efg_solve::EGT::Init() {
   game_->InitUniform(&average_strategy(Player::P1), Player::P1);
   game_->InitUniform(&average_strategy(Player::P2), Player::P2);
   double ev_x, ev_y;
-//  printf("\ninitial gap           = %0.08lf (%0.08lf, %0.08lf)\n", gap(ev_x, ev_y), ev_x, ev_y);
-//  printf("initial excessive gap = %0.08lf (%0.08lf, %0.08lf)\n\n", excessive_gap(ev_x, ev_y), ev_y, ev_x);
+  printf("\ninitial gap           = %0.08lf (%0.08lf, %0.08lf)\n", gap(ev_x, ev_y), ev_x, ev_y);
+  printf("initial excessive gap = %0.08lf (%0.08lf, %0.08lf)\n\n", excessive_gap(ev_x, ev_y), ev_y, ev_x);
   // prox step P2
   game_->UtilityVector(average_strategy(Player::P1), &utility_, Player::P2);
   prox_->ProxStep(-1 / mu(Player::P2), Player::P2, &utility_, &average_strategy(Player::P2));

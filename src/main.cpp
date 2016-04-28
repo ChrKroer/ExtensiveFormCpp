@@ -40,16 +40,19 @@ void run(std::string gamepath, GameName gamename, double mu, double gamma, int r
   for (int run = 0; run < runs; ++run) {
     egt->Run(iterations_per_run);
     print_progress(egt, game);
-    if (run == 64) {
-      int test = 0;
-    }
   }
 }
 }
 
 int main(int argc, char* argv[]) {
   efg_solve::run(efg_solve::config::coin_path, efg_solve::GameName::OTHER, 1.5, 2, 95, 100, 0.00);
-  //efg_solve::run(efg_solve::config::leduc_path, efg_solve::GameName::LEDUC, 1.5, 2, 65, 100, 0.00);
+  //efg_solve::run(efg_solve::config::kuhn_path, efg_solve::GameName::OTHER, 1.5, 2, 10, 1000, 0.00);
+  //efg_solve::run(efg_solve::config::leduckj1_path, efg_solve::GameName::LEDUC, 1.5, 2, 20, 1000, 0.00);
+  //efg_solve::run(efg_solve::config::leduck2_path, efg_solve::GameName::LEDUC, 1.5, 2, 20, 1000, 0.00);
+  //efg_solve::run(efg_solve::config::leduckj2_path, efg_solve::GameName::LEDUC, 1.5, 2, 12, 1000, 0.00);
+  //efg_solve::run(efg_solve::config::leduc1raise_path, efg_solve::GameName::LEDUC, 1.5, 2, 20, 2000, 0.00);
+  //efg_solve::run(efg_solve::config::leduc_path, efg_solve::GameName::LEDUC, 1.5, 2, 8, 1000, 0.00);
+  //efg_solve::run(efg_solve::config::leduc_4betsizes_path, efg_solve::GameName::LEDUC, 3.5, 5, 8, 1000, 0.00);
   return 0;
   try {
     TCLAP::CmdLine cmd("Library for solving extensive-form games.", ' ', "");

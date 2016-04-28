@@ -2,6 +2,7 @@
 // Created by Christian Kroer on 1/10/16.
 //
 
+#include <math.h>
 #include "game_tree.h"
 
 efg_solve::GameTree::GameTree(int num_chance_histories,
@@ -60,6 +61,10 @@ int efg_solve::GameTree::UtilityVectorRecursive(const std::vector<double> &strat
     if (player == Player::P1) {
       (*utility)[parent_sequence_p1] += probability * node_utility_[current_node];
     } else {
+      if (parent_sequence_p2 == 1) {
+        int util = node_utility_[current_node];
+        int test = 0;
+      }
       (*utility)[parent_sequence_p2] += -probability * node_utility_[current_node];
     }
     return 1;
@@ -255,6 +260,7 @@ void efg_solve::GameTree::OrderSequencesRec(int current_node,
   }
 }
 void efg_solve::GameTree::SetLeafData(int node, int sequence_p1, int sequence_p2, double nature_probability) {
+  //nature_probability = round(nature_probability * 1000000) / 1000000;
   double utility = nature_probability * node_utility_[node];
   opponent_leaf_sequences_[0][sequence_p1].push_back(sequence_p2);
   sequence_payoffs_[0][sequence_p1].push_back(utility);

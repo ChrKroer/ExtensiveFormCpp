@@ -3,6 +3,8 @@
 //
 
 #include <cmath>
+#include <stdlib.h>
+#include <iostream>
 #include "dilated_entropy.h"
 #include "../supportcode/vector_calculus.h"
 
@@ -43,6 +45,12 @@ void efg_solve::DilatedEntropy::BregmanProjection(double stepsize, Player player
     normalizer = 1.0 / normalizer;
     for (int sequence = first; sequence <= last; ++sequence) {
       (*strategy)[sequence] *= normalizer;
+      if ((*strategy)[sequence] == 0) {
+        printf("dilated_entropy.cpp: set probability to zero at strategy[%d]\n[", sequence);
+        for (auto p : (*strategy)) std::cout << p << " ";
+        std::cout << "]\n";
+        exit(1);
+      }
     }
 
     (*utility)[parent] += ev * normalizer;

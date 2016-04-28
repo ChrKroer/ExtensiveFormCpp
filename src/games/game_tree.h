@@ -7,6 +7,7 @@
 
 #include <array>
 #include <string>
+#include <iostream>
 #include "game.h"
 
 
@@ -63,6 +64,17 @@ class GameTree: public Game {
 
   void AddLeafNode(int node_id, std::string name, int utility);
   void set_root(int node_id) { root_ = node_id; }
+  void PrintStrategy(Player player, std::vector<double> strategy) {
+    std::cout << std::endl;
+    for (int infoset = 0; infoset < num_infosets(player); infoset++) {
+      std::cout << "Infoset " << infoset << std::endl;
+      int first_seq = infoset_first_sequence(player, infoset);
+      for (int action = 0; action < infoset_num_sequences(player, infoset); action++) {
+        std::cout << strategy[first_seq + action] << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
  private:
   // index of the root node
   int root_;

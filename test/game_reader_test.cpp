@@ -15,6 +15,7 @@ public:
   GameTree::SPtr coin;
   GameTree::SPtr kuhn;
   GameTree::SPtr leduc;
+  GameTree::SPtr leduckj1;
   std::array<std::vector<double>, 2> strategy;
   std::vector<double> utility;
 
@@ -23,6 +24,7 @@ public:
     coin = GameZerosumPackage::CreateGameFromFile(config::coin_path);
     kuhn = GameZerosumPackage::CreateGameFromFile(config::kuhn_path);
     leduc = GameZerosumPackage::CreateGameFromFile(config::leduc_path, GameName::LEDUC);
+    leduckj1 = GameZerosumPackage::CreateGameFromFile(config::leduckj1_path, GameName::LEDUC);
 
     int max_sequences = std::max( { coin->num_sequences(Player::P1), coin->num_sequences(Player::P2),
                                     kuhn->num_sequences(Player::P1), kuhn->num_sequences(Player::P2),
@@ -103,8 +105,10 @@ TEST_F(GameReaderTest, coin_equilibrium_value) {
 TEST_F(GameReaderTest, kuhn_equilibrium_value) {
   strategy[0] = { 1, 0.666667, 0.333333, 1, 0, 0, 1, 0, 0.666667, 0.666667, 0.333333, 0, 0 };
   kuhn->ToBehavioralStrategy(&strategy[0], Player::P1);
+  kuhn->PrintStrategy(Player::P1, strategy[0]);
   strategy[1] = { 1, 0.666667, 0.333333, 1, 0, 0, 1, 0, 1, 0.333333, 0.666667, 1, 0 };
   kuhn->ToBehavioralStrategy(&strategy[1], Player::P2);
+  kuhn->PrintStrategy(Player::P2, strategy[1]);
 
   double game_val = kuhn->GameValue(strategy);
   EXPECT_NEAR(config::kuhn_game_value, game_val, 0.00001);
