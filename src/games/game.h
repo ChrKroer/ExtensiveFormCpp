@@ -18,6 +18,8 @@ namespace efg_solve {
   public:
     typedef std::shared_ptr<Game> SPtr;
 
+    virtual ~Game() {}
+
     // return the total number of sequences available to the player.
     virtual int num_sequences(Player player) const = 0;
 

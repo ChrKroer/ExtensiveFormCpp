@@ -22,7 +22,7 @@ class GameTree: public Game {
  public:
   typedef std::shared_ptr<GameTree> SPtr;
 
-  GameTree(int num_chance_histories, int num_combined_player_histories,
+  GameTree(int num_chance_histories,
            int num_terminal_histories, int num_nodes,
            int num_infosets1, int num_infosets2);
   ~GameTree();
@@ -30,6 +30,7 @@ class GameTree: public Game {
   int num_sequences(Player player) const;
 
   int num_chance_histories() const { return num_chance_histories_; }
+  int num_terminal_histories() const { return num_terminal_histories_; }
 
   int num_infosets(Player player) const;
 
@@ -79,7 +80,7 @@ class GameTree: public Game {
   // index of the root node
   int root_;
   int num_chance_histories_;
-  int num_combined_player_histories_;
+  //int num_combined_player_histories_;
   int num_terminal_histories_;
   int num_nodes_;
   std::array<int, 2> num_infosets_;

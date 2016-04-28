@@ -18,7 +18,7 @@ namespace efg_solve {
     }
 
     static bool check_for_nan(std::vector<double> &vec) {
-      for (int i = 0; i < vec.size(); i++) if (isnan(vec[i])) return true;
+      for (size_t i = 0; i < vec.size(); i++) if (isnan(vec[i])) return true;
       return false;
     }
   };

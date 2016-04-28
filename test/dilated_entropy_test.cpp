@@ -35,7 +35,7 @@ public:
 
 TEST_F(DilatedEntropyTest, prox_step_leaf_uniform) {
   // Skip non-leaf sequences (by setting i=3).
-  for (int i = 3; i < coin_utility.size(); ++i) {
+  for (size_t i = 3; i < coin_utility.size(); ++i) {
     coin_utility[i] = 1;
   }
   coin_prox->ProxStep(1, Player::P1, &coin_utility, &(coin_strategy[0]));

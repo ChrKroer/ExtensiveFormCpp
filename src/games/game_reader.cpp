@@ -51,12 +51,11 @@ efg_solve::GameTree::SPtr efg_solve::GameZerosumPackage::CreateGameFromFile(stri
 efg_solve::GameTree::SPtr efg_solve::GameZerosumPackage::ReadGameInfoLine(const vector<string>& split_line) {
   // game constants
   int num_chance_histories_ = stoi(split_line[1]);
-  int num_combined_player_histories_ = stoi(split_line[2]);
   int num_terminal_histories_ = stoi(split_line[3]);
   int num_nodes_ =  (stoi(split_line[5]) + 1);
   int num_infosets0 = stoi(split_line[7]);
   int num_infosets1 = stoi(split_line[8]);
-  return std::make_shared<GameTree>(num_chance_histories_, num_combined_player_histories_,
+  return std::make_shared<GameTree>(num_chance_histories_,
                                      num_terminal_histories_, num_nodes_,
                                      num_infosets0, num_infosets1);
 }
@@ -93,13 +92,13 @@ void efg_solve::GameZerosumPackage::CreatePlayerNode(vector<string> line, std::s
 
 
 std::string efg_solve::GameZerosumPackage::GetLeducSequenceName(std::string nodename, std::string actionname, Player player) {
-  for (int i = 0; i < nodename.length(); ++i) {
+  for (size_t i = 0; i < nodename.length(); ++i) {
     if (nodename[i] == 'r') nodename[i] = '1';
   }
 
   std::stringstream ss;
   ss << (player == Player::P1 ? nodename[1] : nodename[2]);
-  for (int i = 4; i < nodename.length(); i++ ) {
+  for (size_t i = 4; i < nodename.length(); i++ ) {
     if (nodename[i] != '/') {
       ss << nodename[i];
     }

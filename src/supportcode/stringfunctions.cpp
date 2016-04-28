@@ -22,6 +22,7 @@ std::vector<std::string> StringFunctions::Split(const std::string &s, char delim
 }
 
 std::vector<std::string> StringFunctions::SplitWithQuotes(const std::string &s, char delim) {
+    (void)delim;
     std::vector<std::string> elems;
     so_tokenizer tok(s, escaped_list_separator<char>('\\', ' ', '\''));
     for(so_tokenizer::iterator beg=tok.begin(); beg!=tok.end(); ++beg) {

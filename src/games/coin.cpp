@@ -16,10 +16,12 @@ int efg_solve::Coin::num_infosets(Player player) const {
 
 
 int efg_solve::Coin::infoset_first_sequence(Player player, int infoset) const {
+  (void)player;
   return infoset * 2 + 1;
 }
 
 int efg_solve::Coin::infoset_last_sequence(Player player, int infoset) const {
+  (void)player;
   return (infoset+1) * 2;
 }
 
@@ -49,6 +51,7 @@ int efg_solve::Coin::infoset_parent_sequence(Player player, int infoset) const {
 
 
 int efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player, double threshold) const {
+  (void)threshold;
   return UtilityVector(strategy, utility, player);
 }
 int efg_solve::Coin::UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const {

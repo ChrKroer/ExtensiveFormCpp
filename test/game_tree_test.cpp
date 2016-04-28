@@ -66,7 +66,7 @@ TEST_F(GameTreeTest, kuhn_recursive_iterative_agree) {
   std::vector<double> utility2((unsigned long) kuhn->num_sequences(Player::P1));
   kuhn->UtilityVector(strategy[1], &utility1, Player::P1);
   kuhn->UtilityVector(strategy[1], &utility2, Player::P1, 0.01);
-  for (int i = 0; i < utility1.size(); ++i) {
+  for (size_t i = 0; i < utility1.size(); ++i) {
     EXPECT_NEAR(utility1[i], utility2[i], 0.001);
   }
 }
@@ -81,7 +81,7 @@ TEST_F(GameTreeTest, leduc_recursive_iterative_agree) {
   std::vector<double> utility2((unsigned long) leduc->num_sequences(Player::P1));
   leduc->UtilityVector(strategy[1], &utility1, Player::P1);
   leduc->UtilityVector(strategy[1], &utility2, Player::P1, 0.01);
-  for (int i = 0; i < utility1.size(); ++i) {
+  for (size_t i = 0; i < utility1.size(); ++i) {
     EXPECT_NEAR(utility1[i], utility2[i], 0.001);
   }
 }
@@ -102,7 +102,7 @@ TEST_F(GameTreeTest, leduckj1_equilibrium_zero_regret) {
   leduc->ToBehavioralStrategy(&strategy[1], Player::P2);
 
   double regret1, regret2;
-  double max_regret = leduckj1->MaxRegret(strategy, regret1, regret2);
+  leduckj1->MaxRegret(strategy, regret1, regret2);
 
   EXPECT_NEAR(0, regret1, 0.00001);
   EXPECT_NEAR(0, regret2, 0.00001);

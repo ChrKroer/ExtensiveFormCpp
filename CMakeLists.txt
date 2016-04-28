@@ -5,7 +5,7 @@ project(efg_solve)
 
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fsanitize=address")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 
 set(SOURCE_FILES
@@ -14,7 +14,6 @@ set(SOURCE_FILES
         src/games/coin.cpp src/games/coin.h
         src/solvers/egt.cpp src/solvers/egt.h
         src/solvers/cfr.cpp src/solvers/cfr.h
-        src/games/full_game.cpp src/games/full_game.h
         src/solvers/prox.h
         src/solvers/dilated_entropy.cpp src/solvers/dilated_entropy.h
         src/config.cpp src/config.h

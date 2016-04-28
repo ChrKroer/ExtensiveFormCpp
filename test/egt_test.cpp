@@ -111,7 +111,7 @@ TEST_F(EGTTest, egt_leduc_excessive_gap_small_enough) {
 TEST_F(EGTTest, leduc_cfr_start) {
   std::vector<double> strategy0 = StrategyIO::ReadStrategyStringIds(config::cfrx_strategy_path, leduc->sequence_names(Player::P1), leduc->num_sequences(Player::P1));
   std::vector<double> strategy1 = StrategyIO::ReadStrategyStringIds(config::cfry_strategy_path, leduc->sequence_names(Player::P2), leduc->num_sequences(Player::P2));
-  leduc_egt->WarmStart({strategy0, strategy1});
+  leduc_egt->WarmStart({{strategy0, strategy1}});
   leduc_egt->Run(1000);
   EXPECT_NEAR(efg_solve::config::leduc_game_value, leduc->GameValue(leduc_egt->strategy_profile(), &utility), 0.01);
 }

@@ -10,7 +10,7 @@ efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox) : EGT(game, prox, config::
 
 }
 
-efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma) : EGT(game, prox, config::mu, config::gamma, 0) {
+efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma) : EGT(game, prox, mu, gamma, 0) {
 
 }
 
@@ -85,7 +85,7 @@ void efg_solve::EGT::Init() {
 void efg_solve::EGT::Run(int num_iterations) {
   for (int iterate = 0; iterate < num_iterations; ++iterate) {
     double tau = 2.0 / (iterations_ + 3);
-    double old_gap = game_->MaxRegret(strategy_profile());
+    //double old_gap = game_->MaxRegret(strategy_profile());
 
     if (mu(Player::P2) > mu(Player::P1)) {
       Iteration(Player::P1, Player::P2, tau);
@@ -95,12 +95,12 @@ void efg_solve::EGT::Run(int num_iterations) {
       mu_[0] = (1 - tau) * mu_[0];
     }
     iterations_++;
-    double new_gap = game_->MaxRegret(strategy_profile());
+    //double new_gap = game_->MaxRegret(strategy_profile());
   }
 }
 
 void efg_solve::EGT::Iteration(Player player, Player opponent, double tau) {
-  double ev_x, ev_y;
+  //double ev_x, ev_y;
   double current_threshold = std::min(threshold_ / iterations_, 0.01);
 
   /* compute the expected value associated with each player sequence.
