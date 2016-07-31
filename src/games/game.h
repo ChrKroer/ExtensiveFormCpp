@@ -18,7 +18,7 @@ namespace efg_solve {
   public:
     typedef std::shared_ptr<Game> SPtr;
 
-    virtual ~Game() {}
+    virtual ~Game() = default;
 
     // return the total number of sequences available to the player.
     virtual int num_sequences(Player player) const = 0;
@@ -31,7 +31,8 @@ namespace efg_solve {
 
     virtual int infoset_parent_sequence(Player player, int infoset) const = 0;
 
-    int player_id(Player player) const { if (player == Player::P1) return 0; else return 1; }
+    int player_id(Player player) const { if (player == Player::P1) { return 0; } { return 1;
+}}
 
     // returned value is the amount the intput player can increase their utility by best response.
     double BestResponseValue(Player player, std::vector<double> *utility) const;
@@ -57,10 +58,11 @@ namespace efg_solve {
     virtual int UtilityVector(const std::vector<double> &opponent_strategy, std::vector<double> *utility, Player player) const = 0;
     virtual int UtilityVector(const std::vector<double> &opponent_strategy, std::vector<double> *utility, Player player, double threshold) const = 0;
 
-    Player other_player(Player player) const { if (player == Player::P1) return Player::P2; else return Player::P1; }
+    Player other_player(Player player) const { if (player == Player::P1) { return Player::P2; } { return Player::P1;
+}}
   };
 
 
-}
+}  // namespace efg_solve
 
 #endif //EFG_SOLVERS_GAME_H

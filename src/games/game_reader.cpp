@@ -8,13 +8,9 @@ using namespace std;
 
 
 
-efg_solve::GameZerosumPackage::GameZerosumPackage() {
+efg_solve::GameZerosumPackage::GameZerosumPackage() = default;
 
-}
-
-efg_solve::GameZerosumPackage::~GameZerosumPackage() {
-
-}
+efg_solve::GameZerosumPackage::~GameZerosumPackage() = default;
 
 
 
@@ -92,9 +88,10 @@ void efg_solve::GameZerosumPackage::CreatePlayerNode(vector<string> line, std::s
 
 
 std::string efg_solve::GameZerosumPackage::GetLeducSequenceName(std::string nodename, std::string actionname, Player player) {
-  for (size_t i = 0; i < nodename.length(); ++i) {
-    if (nodename[i] == 'r') nodename[i] = '1';
-  }
+  for (char & i : nodename) {
+    if (i == 'r') { i = '1';
+
+}}
 
   std::stringstream ss;
   ss << (player == Player::P1 ? nodename[1] : nodename[2]);

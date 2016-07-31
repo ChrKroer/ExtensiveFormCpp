@@ -25,24 +25,24 @@ class GameTree: public Game {
   GameTree(int num_chance_histories,
            int num_terminal_histories, int num_nodes,
            int num_infosets1, int num_infosets2);
-  ~GameTree();
+  ~GameTree() override;
 
-  int num_sequences(Player player) const;
+  int num_sequences(Player player) const override;
 
   int num_chance_histories() const { return num_chance_histories_; }
   int num_terminal_histories() const { return num_terminal_histories_; }
 
-  int num_infosets(Player player) const;
+  int num_infosets(Player player) const override;
 
-  int infoset_first_sequence(Player player, int infoset) const {
+  int infoset_first_sequence(Player player, int infoset) const override {
     return infoset_first_sequence_[player_id(player)][infoset];
   }
 
-  int infoset_last_sequence(Player player, int infoset) const {
+  int infoset_last_sequence(Player player, int infoset) const override {
     return infoset_last_sequence_[player_id(player)][infoset];
   }
 
-  int infoset_parent_sequence(Player player, int infoset) const {
+  int infoset_parent_sequence(Player player, int infoset) const override {
     return infoset_parent_sequence_[player_id(player)][infoset];
   }
 
@@ -52,8 +52,8 @@ class GameTree: public Game {
 
   std::vector<std::string> &sequence_names(Player player) { return sequence_names_[player_id(player)]; }
 
-  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const;
-  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player, double threshold) const;
+  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player) const override;
+  int UtilityVector(const std::vector<double> &strategy, std::vector<double> *utility, Player player, double threshold) const override;
 
   // this methods needs to be called after adding all nodes to the game.
   void ComputeGameValues();
@@ -116,7 +116,7 @@ class GameTree: public Game {
 
 
   void init();
-  void SetGenericNodeInfo(int node_id, std::string name, NodeType);
+  void SetGenericNodeInfo(int node_id, std::string name, NodeType /*type*/);
   void OrderSequences();
   void OrderSequences(Player player);
   void OrderSequencesRec(int current_node, int parent_sequence_p1, int parent_sequence_p2, double nature_probability);
@@ -132,7 +132,7 @@ class GameTree: public Game {
                              double probability
   ) const;
 };
-}
+}  // namespace efg_solve
 
 
 #endif //EFG_SOLVE_GAMETREE_H

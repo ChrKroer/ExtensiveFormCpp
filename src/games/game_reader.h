@@ -23,7 +23,7 @@ class GameZerosumPackage {
 
   ~GameZerosumPackage();
 
-  static GameTree::SPtr CreateGameFromFile(std::string filename, GameName = GameName::OTHER);
+  static GameTree::SPtr CreateGameFromFile(std::string filename, GameName  /*game*/= GameName::OTHER);
 
  private:
   static GameTree::SPtr ReadGameInfoLine(const std::vector<std::string> &split_line);
@@ -34,5 +34,5 @@ class GameZerosumPackage {
 
   static std::string GetLeducSequenceName(std::string nodename, std::string actionname, Player player);
 };
-}
+}  // namespace efg_solve
 #endif

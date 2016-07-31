@@ -15,7 +15,7 @@ namespace efg_solve {
   public:
     typedef std::shared_ptr<Prox> SPtr;
 
-    Prox(Game::SPtr game) {game_ = std::move(game); }
+    explicit Prox(Game::SPtr game) {game_ = std::move(game); }
 
     virtual void ProxStep(double stepsize, Player player, std::vector<double> *utility, std::vector<double> *strategy) const = 0;
     // previous is never modified. However, it is made a pointer to allow passing NULL in.
@@ -34,6 +34,6 @@ namespace efg_solve {
     Game::SPtr game_;
   };
 
-}
+}  // namespace efg_solve
 
 #endif //EFG_SOLVE_PROX_H

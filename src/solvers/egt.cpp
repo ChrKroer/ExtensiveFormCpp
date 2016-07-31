@@ -20,9 +20,7 @@ efg_solve::EGT::EGT(Game::SPtr game, Prox::SPtr prox, double mu, double gamma, d
   Init();
 }
 
-efg_solve::EGT::~EGT() {
-
-}
+efg_solve::EGT::~EGT() = default;
 
 double efg_solve::EGT::excessive_gap() {
   double x,y;
@@ -58,9 +56,9 @@ double efg_solve::EGT::gap(double &ev_x, double &ev_y) {
 };
 
 void efg_solve::EGT::Init() {
-  unsigned int max_sequences = (unsigned int) std::max(game_->num_sequences(Player::P1), game_->num_sequences(Player::P2));
-  best_response_[0].resize((unsigned long) game_->num_sequences(Player::P1), 0);
-  best_response_[1].resize((unsigned long) game_->num_sequences(Player::P2), 0);
+  unsigned int max_sequences = static_cast<unsigned int>( std::max(game_->num_sequences(Player::P1), game_->num_sequences(Player::P2)));
+  best_response_[0].resize(static_cast<unsigned long>( game_->num_sequences(Player::P1)), 0);
+  best_response_[1].resize(static_cast<unsigned long>( game_->num_sequences(Player::P2)), 0);
   intermediate_.resize(max_sequences, 0);
   utility_.resize(max_sequences, 0);
 

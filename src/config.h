@@ -59,7 +59,7 @@ extern double leduc_4betsizes_game_value;
 extern std::string leduc_4betsizes_path;
 extern std::string leduc_4betsizes_equilibrium_p1;
 extern std::string leduc_4betsizes_equilibrium_p2;
-}
-}
+}  // namespace config
+}  // namespace efg_solve
 
 #endif //EFG_SOLVE_CONFIG_H

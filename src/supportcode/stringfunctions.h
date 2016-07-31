@@ -12,7 +12,7 @@ public:
     return !s.empty() && std::find_if(s.begin(),
                                       s.end(),
                                       [](char c)
-                                      { return !std::isdigit(c); }) == s.end();
+                                      { return std::isdigit(c) == 0; }) == s.end();
   }
 };
 

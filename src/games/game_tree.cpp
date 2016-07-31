@@ -17,17 +17,15 @@ efg_solve::GameTree::GameTree(int num_chance_histories,
   init();
 }
 
-efg_solve::GameTree::~GameTree() {
-
-}
+efg_solve::GameTree::~GameTree() = default;
 
 
 int efg_solve::GameTree::num_infosets(Player player) const {
-  return (int) num_infosets_[player_id(player)];
+  return static_cast<int>( num_infosets_[player_id(player)]);
 }
 
 int efg_solve::GameTree::num_sequences(Player player) const {
-  return (int) num_sequences_[player_id(player)];
+  return static_cast<int>( num_sequences_[player_id(player)]);
 }
 
 int efg_solve::GameTree::UtilityVector(const std::vector<double> &strategy,
@@ -74,7 +72,8 @@ int efg_solve::GameTree::UtilityVectorRecursive(const std::vector<double> &strat
       } else {
         sequence_p2 = new_sequence;
       }
-      if (node_player != player) new_probability *= strategy[new_sequence];
+      if (node_player != player) { new_probability *= strategy[new_sequence];
+}
     }
     if (new_probability < threshold) {
       //printf("continuing\n");
@@ -89,7 +88,7 @@ int efg_solve::GameTree::UtilityVectorRecursive(const std::vector<double> &strat
 int efg_solve::GameTree::UtilityVectorIterative(const std::vector<double> &strategy, std::vector<double> *utility,
                                        Player player) const {
   std::fill(std::begin(*utility), std::end(*utility), 0);
-  // TODO: handle lack of sequence form conversion here
+  // TODO(ckroer): handle lack of sequence form conversion here
   for (int i = 0; i < num_sequences(player); ++i) {
     for (size_t j = 0; j < opponent_leaf_sequences_[player_id(player)][i].size(); ++j) {
       int opponent_sequence_id = opponent_leaf_sequences_[player_id(player)][i][j];
@@ -105,30 +104,30 @@ int efg_solve::GameTree::UtilityVectorIterative(const std::vector<double> &strat
 void efg_solve::GameTree::init() {
   // individual node information
   // we use the min int value for denoting non-leaf nodes
-  node_type_.resize((unsigned long) num_nodes_);
-  node_utility_.resize((unsigned long) num_nodes_, std::numeric_limits<int>::min());
-  node_parent_node_.resize((unsigned long) num_nodes_, std::numeric_limits<int>::min());
+  node_type_.resize(static_cast<unsigned long>( num_nodes_));
+  node_utility_.resize(static_cast<unsigned long>( num_nodes_), std::numeric_limits<int>::min());
+  node_parent_node_.resize(static_cast<unsigned long>( num_nodes_), std::numeric_limits<int>::min());
   node_parent_node_[0] = 0;
-  node_infoset_.resize((unsigned long) num_nodes_, std::numeric_limits<int>::min());
-  node_nature_probability_.resize((unsigned long) num_nodes_, 1);
-  node_names_.resize((unsigned long) num_nodes_);
-  node_children_.resize((unsigned long) num_nodes_);
+  node_infoset_.resize(static_cast<unsigned long>( num_nodes_), std::numeric_limits<int>::min());
+  node_nature_probability_.resize(static_cast<unsigned long>( num_nodes_), 1);
+  node_names_.resize(static_cast<unsigned long>( num_nodes_));
+  node_children_.resize(static_cast<unsigned long>( num_nodes_));
 
   // individual information set information
-  infosets_[0].resize((unsigned long) num_infosets_[0], std::vector<int>());
-  infosets_[1].resize((unsigned long) num_infosets_[1], std::vector<int>());
-  infoset_seen_[0].resize((unsigned long) num_infosets_[0], false);
-  infoset_seen_[1].resize((unsigned long) num_infosets_[1], false);
-  infoset_first_sequence_[0].resize((unsigned long) num_infosets_[0]);
-  infoset_first_sequence_[1].resize((unsigned long) num_infosets_[1]);
-  infoset_last_sequence_[0].resize((unsigned long) num_infosets_[0]);
-  infoset_last_sequence_[1].resize((unsigned long) num_infosets_[1]);
-  infoset_parent_sequence_[0].resize((unsigned long) num_infosets_[0]);
-  infoset_parent_sequence_[1].resize((unsigned long) num_infosets_[1]);
-  infoset_num_actions_[0].resize((unsigned long) num_infosets_[0]);
-  infoset_num_actions_[1].resize((unsigned long) num_infosets_[1]);
-  infoset_sequence_names_[0].resize((unsigned long) num_infosets_[0]);
-  infoset_sequence_names_[1].resize((unsigned long) num_infosets_[1]);
+  infosets_[0].resize(static_cast<unsigned long>( num_infosets_[0]), std::vector<int>());
+  infosets_[1].resize(static_cast<unsigned long>( num_infosets_[1]), std::vector<int>());
+  infoset_seen_[0].resize(static_cast<unsigned long>( num_infosets_[0]), false);
+  infoset_seen_[1].resize(static_cast<unsigned long>( num_infosets_[1]), false);
+  infoset_first_sequence_[0].resize(static_cast<unsigned long>( num_infosets_[0]));
+  infoset_first_sequence_[1].resize(static_cast<unsigned long>( num_infosets_[1]));
+  infoset_last_sequence_[0].resize(static_cast<unsigned long>( num_infosets_[0]));
+  infoset_last_sequence_[1].resize(static_cast<unsigned long>( num_infosets_[1]));
+  infoset_parent_sequence_[0].resize(static_cast<unsigned long>( num_infosets_[0]));
+  infoset_parent_sequence_[1].resize(static_cast<unsigned long>( num_infosets_[1]));
+  infoset_num_actions_[0].resize(static_cast<unsigned long>( num_infosets_[0]));
+  infoset_num_actions_[1].resize(static_cast<unsigned long>( num_infosets_[1]));
+  infoset_sequence_names_[0].resize(static_cast<unsigned long>( num_infosets_[0]));
+  infoset_sequence_names_[1].resize(static_cast<unsigned long>( num_infosets_[1]));
 
   num_sequences_[0] = 1;
   num_sequences_[1] = 1;
@@ -165,7 +164,7 @@ void efg_solve::GameTree::AddPlayerNode(int node_id,
   }
   if (!infoset_seen_[player_id(player)][infoset]) {
     infoset_seen_[player_id(player)][infoset] = true;
-    infoset_num_actions_[player_id(player)][infoset] = (int) child_ids.size();
+    infoset_num_actions_[player_id(player)][infoset] = static_cast<int>( child_ids.size());
   }
 }
 
@@ -195,9 +194,9 @@ void efg_solve::GameTree::SetGenericNodeInfo(int node_id, std::string name, efg_
 void efg_solve::GameTree::OrderSequences() {
   for (int player_id = 0; player_id < 2; player_id++) {
     Player player = player_id == 0 ? Player::P1 : Player::P2;
-    parent_sequence_[player_id].resize((unsigned long) num_sequences(player), 0);
-    opponent_leaf_sequences_[player_id].resize((unsigned long) num_sequences(player));
-    sequence_payoffs_[player_id].resize((unsigned long) num_sequences(player));
+    parent_sequence_[player_id].resize(static_cast<unsigned long>( num_sequences(player)), 0);
+    opponent_leaf_sequences_[player_id].resize(static_cast<unsigned long>( num_sequences(player)));
+    sequence_payoffs_[player_id].resize(static_cast<unsigned long>( num_sequences(player)));
   }
   OrderSequences(Player::P1);
   OrderSequences(Player::P2);
